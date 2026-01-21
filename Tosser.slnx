@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Tosser.vcxproj" />
+  <Project Path="Tosser.vcxproj" Id="9d3caf7c-5346-46f0-b3ff-ad6f4754ed9c" />
 </Solution>
