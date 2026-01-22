@@ -1,6 +1,8 @@
 #pragma once
 
-#define BALLSIZE 50.f
-#define POWERMETERX 30.f
-#define POWERMETERY 400.f
-#define GRAVITY 980.f
+namespace Const {
+    constexpr float BallSize = 50.f;
+    constexpr float PowerMeterW = 30.f;
+    constexpr float PowerMeterH = 400.f;
+    constexpr float Gravity = 980.f;
+}
