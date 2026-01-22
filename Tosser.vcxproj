@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="SRC\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="ASSETS\snow.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
