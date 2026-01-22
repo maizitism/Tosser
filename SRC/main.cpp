@@ -2,10 +2,8 @@
 #include <cmath>
 #include <vector>
 
-#define BALLSIZE 50.f
-#define POWERMETERX 30.f
-#define POWERMETERY 400.f
-#define GRAVITY 980.f
+#include "data.hpp"
+#include "constants.hpp"
 
 class GradientBar : public sf::Drawable, public sf::Transformable {
 public:
@@ -36,63 +34,83 @@ private:
 
 };
 
-void advancePowerMarker(sf::RectangleShape& marker, MarkerData& markerData, const float dt) {
+void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, MarkerData& md, const float dt) {
+    // Sweep md.power between 0 and 1
+    if (md.increasing)
+        md.power += md.sweepSpeed * dt;   // "units per second"
+    else
+        md.power -= md.sweepSpeed * dt;
 
+    // Bounce at the ends
+    if (md.power >= 1.f) { md.power = 1.f; md.increasing = false; }
+    if (md.power <= 0.f) { md.power = 0.f; md.increasing = true; }
+
+    // Convert power -> marker position over the meter
+    const sf::Vector2f meterCenter = powermeter.getPosition();
+    const float meterTop = meterCenter.y - (Const::PowerMeterH * 0.5f);
+
+    // power=1 at top, power=0 at bottom
+    const float y = meterTop + (1.f - md.power) * Const::PowerMeterH;
+    const float x = meterCenter.x;
+
+    marker.setPosition({ x, y });
 }
 
 
 int main()
 {
-    // initialise window
+    // -- SETUP --
     sf::RenderWindow window(sf::VideoMode({ 960, 540 }), "SFML works!");
-    
-    // initialise all colors
-    sf::Color maxforce(216, 27, 23); // red color for power meter
-    sf::Color minforce(28, 124, 6); // green color for power meter
+    window.setFramerateLimit(120);
+  
+    // variables
+    sf::Clock clock;
 
-    // initialise all shapes
-    sf::CircleShape paperball(BALLSIZE);
-    GradientBar powermeter({POWERMETERX, POWERMETERY}, maxforce, minforce);
-    sf::RectangleShape powermarker({ POWERMETERX + 15.f, 5.f });
+    MarkerData markerdata;
+    PowerMeterData meterData;
+
+    // shapes
+    sf::CircleShape paperball(Const::BallSize);
+    GradientBar powermeter({Const::PowerMeterW, Const::PowerMeterH},
+        meterData.c_maxforce, meterData.c_minforce);
+    sf::RectangleShape powermarker({ Const::PowerMeterW + 15.f, 5.f });
 
 
-    // set initial layout of everything
+    // layout
     // paper ball
     paperball.setFillColor(sf::Color::White);
-    paperball.setOrigin({ BALLSIZE / 2, BALLSIZE / 2 });
     paperball.setPosition({ 750.f, 350.f });
+    paperball.setOrigin({ Const::BallSize / 2, Const::BallSize / 2 });
     // power meter
-    powermeter.setPosition({ 900.f, 70.f });
+    powermeter.setOrigin({ Const::PowerMeterW / 2, Const::PowerMeterH / 2 });
+    powermeter.setPosition({ 900.f, 250.f });
     // power meter indicator
-    powermarker.setOrigin({ (POWERMETERX + 15) / 2, 7.5f });
+    powermarker.setOrigin({ (Const::PowerMeterW + 15.f) * 0.5f, 5.f * 0.5f });
     powermarker.setFillColor(sf::Color::White);
 
+    advancePowerMarker(powermarker, powermeter, markerdata, 0.f);
 
-    // initialise time variable
-    sf::Clock clock;
-    // initialise struct for values around power marker
-    struct MarkerData {
-        float power = 0.0f;
-        float sweepspeed = 15.f; // px/s
-        bool charging = false;
-        bool increasing = false;
-    };
-
-    MarkerData markerdata = { 0, false, false };
-    
+    // -- MAIN LOOP --
     while (window.isOpen())
     {   
+        // time step
         float dt = clock.restart().asSeconds();
 
-        // -- EVENTS --
+        // events
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
-                window.close();
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-                advancePowerMarker(powermarker, markerdata, dt);
-            }
+                window.close();            
         }
+
+        // inputs
+        bool spaceDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
+
+        // update
+        if (spaceDown) {
+            advancePowerMarker(powermarker, powermeter, markerdata, dt);
+        }
+
 
 
         // first poll for spacebar input
@@ -101,7 +119,7 @@ int main()
         // when OOB, gets reset
        
 
-        // -- RENDER --
+        // render
         window.clear();
         window.draw(paperball);
         window.draw(powermeter);
