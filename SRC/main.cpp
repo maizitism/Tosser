@@ -20,8 +20,8 @@ public:
     void setColors(sf::Color top, sf::Color bottom)
     {
         vertices[0].color = top;
-        vertices[1].color = bottom;
-        vertices[2].color = top;
+        vertices[2].color = bottom;
+        vertices[1].color = top;
         vertices[3].color = bottom;
     }
 
@@ -39,9 +39,13 @@ int main()
     // initialise window
     sf::RenderWindow window(sf::VideoMode({ 960, 540 }), "SFML works!");
     
+    // initialise all colors
+    sf::Color maxforce(216, 27, 23); // red color for power meter
+    sf::Color minforce(28, 124, 6); // green color for power meter
+
     // initialise all shapes
     sf::CircleShape paperball(BALLSIZE);
-    
+    GradientBar powermeter({30.f, 400.f}, maxforce, minforce);
 
 
     // set initial layout of everything
@@ -50,7 +54,7 @@ int main()
     paperball.setOrigin({ BALLSIZE / 2, BALLSIZE / 2 });
     paperball.setPosition({ 750.f, 350.f });
     // power meter
-
+    powermeter.setPosition({ 900.f, 70.f });
 
     while (window.isOpen())
     {
@@ -71,6 +75,7 @@ int main()
 
         window.clear();
         window.draw(paperball);
+        window.draw(powermeter);
         window.display();
 
     }
