@@ -3,6 +3,8 @@
 #include <vector>
 
 #define BALLSIZE 50.f
+#define POWERMETERX 30.f
+#define POWERMETERY 400.f
 #define GRAVITY 980.f
 
 class GradientBar : public sf::Drawable, public sf::Transformable {
@@ -34,6 +36,11 @@ private:
 
 };
 
+void advancePowerMarker(sf::RectangleShape& marker, MarkerData& markerData, const float dt) {
+
+}
+
+
 int main()
 {
     // initialise window
@@ -45,7 +52,8 @@ int main()
 
     // initialise all shapes
     sf::CircleShape paperball(BALLSIZE);
-    GradientBar powermeter({30.f, 400.f}, maxforce, minforce);
+    GradientBar powermeter({POWERMETERX, POWERMETERY}, maxforce, minforce);
+    sf::RectangleShape powermarker({ POWERMETERX + 15.f, 5.f });
 
 
     // set initial layout of everything
@@ -55,17 +63,37 @@ int main()
     paperball.setPosition({ 750.f, 350.f });
     // power meter
     powermeter.setPosition({ 900.f, 70.f });
+    // power meter indicator
+    powermarker.setOrigin({ (POWERMETERX + 15) / 2, 7.5f });
+    powermarker.setFillColor(sf::Color::White);
 
+
+    // initialise time variable
+    sf::Clock clock;
+    // initialise struct for values around power marker
+    struct MarkerData {
+        float power = 0.0f;
+        float sweepspeed = 15.f; // px/s
+        bool charging = false;
+        bool increasing = false;
+    };
+
+    MarkerData markerdata = { 0, false, false };
+    
     while (window.isOpen())
-    {
+    {   
+        float dt = clock.restart().asSeconds();
+
+        // -- EVENTS --
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
-               
+                advancePowerMarker(powermarker, markerdata, dt);
             }
         }
+
 
         // first poll for spacebar input
         // while held, that starts a sweeping meter which between a MAXFORCE and a MINFORCE
@@ -73,9 +101,11 @@ int main()
         // when OOB, gets reset
        
 
+        // -- RENDER --
         window.clear();
         window.draw(paperball);
         window.draw(powermeter);
+        window.draw(powermarker);
         window.display();
 
     }
