@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
+#include <iostream>
 
 #include "data.hpp"
 #include "constants.hpp"
@@ -133,4 +134,6 @@ int main()
         window.display();
 
     }
+    std::cout << "Goodbye cruel world." << std::endl;
+    return 0;
 }
