@@ -2,7 +2,7 @@
 #include "SFML/Graphics/Color.hpp"
 
 struct MarkerData {
-    float power = 0.0f;
+    float power = 0.5f;
     float sweepSpeed = 1.5f; // power units/s
     bool charging = false;
     bool increasing = true;

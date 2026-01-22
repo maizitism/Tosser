@@ -24,6 +24,10 @@
   <ItemGroup>
     <Image Include="ASSETS\snow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SRC\data.hpp" />
+    <ClInclude Include="SRC\constants.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
