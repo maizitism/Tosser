@@ -116,7 +116,13 @@ int main()
         // first poll for spacebar input
         // while held, that starts a sweeping meter which between a MAXFORCE and a MINFORCE
         // when released, ball gets thrown with appropriate velocity
+        // compute trajectory and let ball travel along it, while slowly getting smaller, simulating a z axis
+        // AABB for trashcan
+        // if hit, count score or something idk
+        // if not, continue its trajectory
         // when OOB, gets reset
+
+        // happy days
        
 
         // render
