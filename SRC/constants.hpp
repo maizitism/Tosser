@@ -7,4 +7,4 @@ namespace Const {
     constexpr float Gravity = 980.f;
     constexpr float PI = 3.1415926535f;
 }
-}
+
