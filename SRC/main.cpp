@@ -35,7 +35,7 @@ private:
 
 };
 
-void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, MarkerData& md, const float dt) {
+void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, markerData& md, const float dt) {
     // Sweep md.power between 0 and 1
     if (md.increasing)
         md.power += md.sweepSpeed * dt;   // "units per second"
@@ -63,6 +63,7 @@ sf::VertexArray buildTrajectory(sf::Vector2f p0, sf::Vector2f v0,
     float gravity, float tMax, float dt,
     sf::FloatRect bounds) {
 
+
     sf::VertexArray points(sf::PrimitiveType::Points);
     sf::Vector2f g{ 0.f, gravity };
 
@@ -86,8 +87,9 @@ int main()
     // variables
     sf::Clock clock;
 
-    MarkerData markerdata;
+    MarkerData markerData;
     PowerMeterData meterData;
+    TrajectoryData trajectoryData;
 
     // shapes
     sf::CircleShape paperball(Const::BallSize);
@@ -108,10 +110,11 @@ int main()
     // power meter indicator
     powermarker.setOrigin({ (Const::PowerMeterW + 15.f) * 0.5f, 5.f * 0.5f });
     powermarker.setFillColor(sf::Color::White);
-    // set up trajectory object
-    // pick arbitrary angle
+
+    // pick arbitrary angle for trajectory
     float a = 30.f;
     float a_rad = a * Const::PI / 180.f;
+   
 
 
 
@@ -119,7 +122,7 @@ int main()
     std::cout << "x " << static_cast<float>(v.x) << "y" << static_cast<float>(v.y) << std::endl;*/
 
     // display power marker immediately
-    advancePowerMarker(powermarker, powermeter, markerdata, 0.f);
+    advancePowerMarker(powermarker, powermeter, markerData, 0.f);
 
     // -- MAIN LOOP --
     while (window.isOpen())
@@ -139,10 +142,10 @@ int main()
 
         // update
         if (spaceDown) {
-            advancePowerMarker(powermarker, powermeter, markerdata, dt);
-            // compute speed value at which ball would get thrown from markerdata.power
-            float speed = lin_interp(markerdata.throwSpeedMin, markerdata.throwSpeedMax, markerdata.power);
-            // compute new v0 based on markerdata.power
+            advancePowerMarker(powermarker, powermeter, markerData, dt);
+            // compute speed value at which ball would get thrown from markerData.power
+            float speed = lin_interp(markerData.throwSpeedMin, markerData.throwSpeedMax, markerData.power);
+            // compute new v0 based on markerData.power
             sf::Vector2f v0{
                 -std::cos(a_rad) * speed,
                 -std::sin(a_rad) * speed
