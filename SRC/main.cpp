@@ -57,6 +57,23 @@ void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, Mar
     marker.setPosition({ x, y });
 }
 
+sf::VertexArray buildTrajectory(sf::Vector2f p0, sf::Vector2f v0,
+    float gravity, float tMax, float dt,
+    sf::FloatRect bounds) {
+
+    sf::VertexArray line(sf::PrimitiveType::LineStrip);
+    sf::Vector2f g{ 0.f, gravity };
+
+    for (float t = 0.f; t <= tMax; t += dt) {
+        sf::Vector2f p = p0 + v0 * t + 0.5f * g * (t * t);
+
+        if (!bounds.contains(p)) break;
+        line.append(sf::Vertex(p));
+    }
+    return line;
+}
+
+
 
 int main()
 {
@@ -75,7 +92,8 @@ int main()
     GradientBar powermeter({Const::PowerMeterW, Const::PowerMeterH},
         meterData.c_maxforce, meterData.c_minforce);
     sf::RectangleShape powermarker({ Const::PowerMeterW + 15.f, 5.f });
-
+    sf::VertexArray trajectory; // trajectory object
+    
 
     // layout
     // paper ball
@@ -88,7 +106,20 @@ int main()
     // power meter indicator
     powermarker.setOrigin({ (Const::PowerMeterW + 15.f) * 0.5f, 5.f * 0.5f });
     powermarker.setFillColor(sf::Color::White);
+    // set up trajectory object
+    trajectory = buildTrajectory(
+        paperball.getPosition(),
+        sf::Vector2f{ -350.f, -450.f },
+        Const::Gravity,
+        2.5f,
+        0.03f,
+        sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
+    );
 
+    sf::Vector2f v = paperball.getPosition();
+    std::cout << "x " << static_cast<float>(v.x) << "y" << static_cast<float>(v.y) << std::endl;
+
+    // display power marker immediately
     advancePowerMarker(powermarker, powermeter, markerdata, 0.f);
 
     // -- MAIN LOOP --
@@ -110,6 +141,7 @@ int main()
         // update
         if (spaceDown) {
             advancePowerMarker(powermarker, powermeter, markerdata, dt);
+
         }
 
 
@@ -131,6 +163,7 @@ int main()
         window.draw(paperball);
         window.draw(powermeter);
         window.draw(powermarker);
+        window.draw(trajectory);
         window.display();
 
     }
