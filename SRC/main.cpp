@@ -153,7 +153,7 @@ int main()
                 v0,
                 Const::Gravity,
                 3.f,
-                dt,
+                0.05f,
                 sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
             );
 
