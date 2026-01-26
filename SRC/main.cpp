@@ -35,23 +35,23 @@ private:
 
 };
 
-void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, markerData& md, const float dt) {
-    // Sweep md.power between 0 and 1
-    if (md.increasing)
-        md.power += md.sweepSpeed * dt;   // "units per second"
+void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, const float dt) {
+    // Sweep MarkerData::power between 0 and 1
+    if (MarkerData::increasing)
+        MarkerData::power += MarkerData::sweepSpeed * dt;   // "units per second"
     else
-        md.power -= md.sweepSpeed * dt;
+        MarkerData::power -= MarkerData::sweepSpeed * dt;
 
     // Bounce at the ends
-    if (md.power >= 1.f) { md.power = 1.f; md.increasing = false; }
-    if (md.power <= 0.f) { md.power = 0.f; md.increasing = true; }
+    if (MarkerData::power >= 1.f) { MarkerData::power = 1.f; MarkerData::increasing = false; }
+    if (MarkerData::power <= 0.f) { MarkerData::power = 0.f; MarkerData::increasing = true; }
 
     // Convert power -> marker position over the meter
     const sf::Vector2f meterCenter = powermeter.getPosition();
     const float meterTop = meterCenter.y - (Const::PowerMeterH * 0.5f);
 
     // power=1 at top, power=0 at bottom
-    const float y = meterTop + (1.f - md.power) * Const::PowerMeterH;
+    const float y = meterTop + (1.f - MarkerData::power) * Const::PowerMeterH;
     const float x = meterCenter.x;
 
     marker.setPosition({ x, y });
@@ -87,14 +87,11 @@ int main()
     // variables
     sf::Clock clock;
 
-    MarkerData markerData;
-    PowerMeterData meterData;
-    TrajectoryData trajectoryData;
 
     // shapes
     sf::CircleShape paperball(Const::BallSize);
     GradientBar powermeter({Const::PowerMeterW, Const::PowerMeterH},
-        meterData.c_maxforce, meterData.c_minforce);
+        PowerMeterData::c_maxforce, PowerMeterData::c_minforce);
     sf::RectangleShape powermarker({ Const::PowerMeterW + 15.f, 5.f });
     sf::VertexArray trajectory; // trajectory object
     
@@ -122,7 +119,7 @@ int main()
     std::cout << "x " << static_cast<float>(v.x) << "y" << static_cast<float>(v.y) << std::endl;*/
 
     // display power marker immediately
-    advancePowerMarker(powermarker, powermeter, markerData, 0.f);
+    advancePowerMarker(powermarker, powermeter, 0.f);
 
     // -- MAIN LOOP --
     while (window.isOpen())
@@ -142,10 +139,10 @@ int main()
 
         // update
         if (spaceDown) {
-            advancePowerMarker(powermarker, powermeter, markerData, dt);
-            // compute speed value at which ball would get thrown from markerData.power
-            float speed = lin_interp(markerData.throwSpeedMin, markerData.throwSpeedMax, markerData.power);
-            // compute new v0 based on markerData.power
+            advancePowerMarker(powermarker, powermeter, dt);
+            // compute speed value at which ball would get thrown from MarkerData::power
+            float speed = lin_interp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, MarkerData::power);
+            // compute new v0 based on MarkerData::power
             sf::Vector2f v0{
                 -std::cos(a_rad) * speed,
                 -std::sin(a_rad) * speed
