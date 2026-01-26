@@ -57,6 +57,8 @@ void advancePowerMarker(sf::RectangleShape& marker, GradientBar& powermeter, Mar
     marker.setPosition({ x, y });
 }
 
+static float lin_interp(float a, float b, float t) { return a + (b - a) * t; }
+
 sf::VertexArray buildTrajectory(sf::Vector2f p0, sf::Vector2f v0,
     float gravity, float tMax, float dt,
     sf::FloatRect bounds) {
@@ -107,17 +109,14 @@ int main()
     powermarker.setOrigin({ (Const::PowerMeterW + 15.f) * 0.5f, 5.f * 0.5f });
     powermarker.setFillColor(sf::Color::White);
     // set up trajectory object
-    trajectory = buildTrajectory(
-        paperball.getPosition(),
-        sf::Vector2f{ -350.f, -450.f },
-        Const::Gravity,
-        2.5f,
-        0.03f,
-        sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
-    );
+    // pick arbitrary angle
+    float a = 30.f;
+    float a_rad = a * Const::PI / 180.f;
 
-    sf::Vector2f v = paperball.getPosition();
-    std::cout << "x " << static_cast<float>(v.x) << "y" << static_cast<float>(v.y) << std::endl;
+
+
+    /*sf::Vector2f v = paperball.getPosition();
+    std::cout << "x " << static_cast<float>(v.x) << "y" << static_cast<float>(v.y) << std::endl;*/
 
     // display power marker immediately
     advancePowerMarker(powermarker, powermeter, markerdata, 0.f);
@@ -141,6 +140,22 @@ int main()
         // update
         if (spaceDown) {
             advancePowerMarker(powermarker, powermeter, markerdata, dt);
+            // compute speed value at which ball would get thrown from markerdata.power
+            float speed = lin_interp(markerdata.throwSpeedMin, markerdata.throwSpeedMax, markerdata.power);
+            // compute new v0 based on markerdata.power
+            sf::Vector2f v0{
+                -std::cos(a_rad) * speed,
+                -std::sin(a_rad) * speed
+            };
+            
+            trajectory = buildTrajectory(
+                paperball.getPosition(),
+                v0,
+                Const::Gravity,
+                3.f,
+                dt,
+                sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
+            );
 
         }
 
