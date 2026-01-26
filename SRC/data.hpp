@@ -2,8 +2,10 @@
 #include "SFML/Graphics/Color.hpp"
 
 struct MarkerData {
-    float power = 0.5f;
+    float power = 0.5f; // starting value
     float sweepSpeed = 1.5f; // power units/s
+    float throwSpeedMax = 750;
+    float throwSpeedMin = 350;
     bool charging = false;
     bool increasing = true;
 };
