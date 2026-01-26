@@ -5,4 +5,6 @@ namespace Const {
     constexpr float PowerMeterW = 30.f;
     constexpr float PowerMeterH = 400.f;
     constexpr float Gravity = 980.f;
+    constexpr float PI = 3.1415926535f;
+}
 }
