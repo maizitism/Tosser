@@ -10,6 +10,11 @@ struct MarkerData {
     bool increasing = true;
 };
 
+struct TrajectoryData {
+    float r0 = 4.0f;
+    float f = 2.0f;
+};
+
 struct PowerMeterData {
     sf::Color c_maxforce{ 216, 27, 23 }; // red color for power meter
     sf::Color c_minforce{ 28, 124, 6 }; // green color for power meter
