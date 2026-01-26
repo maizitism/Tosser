@@ -63,16 +63,16 @@ sf::VertexArray buildTrajectory(sf::Vector2f p0, sf::Vector2f v0,
     float gravity, float tMax, float dt,
     sf::FloatRect bounds) {
 
-    sf::VertexArray line(sf::PrimitiveType::LineStrip);
+    sf::VertexArray points(sf::PrimitiveType::Points);
     sf::Vector2f g{ 0.f, gravity };
 
     for (float t = 0.f; t <= tMax; t += dt) {
         sf::Vector2f p = p0 + v0 * t + 0.5f * g * (t * t);
 
         if (!bounds.contains(p)) break;
-        line.append(sf::Vertex(p));
+        points.append(sf::Vertex(p));
     }
-    return line;
+    return points;
 }
 
 
