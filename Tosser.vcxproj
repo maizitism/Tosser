@@ -19,14 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SRC\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="ASSETS\snow.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\Ball.cpp" />
+    <ClCompile Include="SRC\Game.cpp" />
+    <ClCompile Include="SRC\GradientBar.cpp" />
+    <ClCompile Include="SRC\main.cpp" />
+    <ClCompile Include="SRC\Math.cpp" />
+    <ClCompile Include="SRC\PowerMeter.cpp" />
+    <ClCompile Include="SRC\Trajectory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SRC\Ball.hpp" />
+    <ClInclude Include="SRC\Constants.hpp" />
     <ClInclude Include="SRC\data.hpp" />
-    <ClInclude Include="SRC\constants.hpp" />
+    <ClInclude Include="SRC\Game.hpp" />
+    <ClInclude Include="SRC\GradientBar.hpp" />
+    <ClInclude Include="SRC\Math.hpp" />
+    <ClInclude Include="SRC\PowerMeter.hpp" />
+    <ClInclude Include="SRC\Trajectory.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
