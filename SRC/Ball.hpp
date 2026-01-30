@@ -9,6 +9,7 @@ public:
     sf::Vector2f getPosition() const;
 
 private:
-    sf::CircleShape shape;
+    sf::Texture texture;
+    sf::Sprite sprite;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

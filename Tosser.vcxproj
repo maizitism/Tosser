@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ASSETS\paper_ball.png" />
     <Image Include="ASSETS\snow.png" />
   </ItemGroup>
   <ItemGroup>

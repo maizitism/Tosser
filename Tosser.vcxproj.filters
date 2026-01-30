@@ -18,6 +18,9 @@
     <Image Include="ASSETS\snow.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="ASSETS\paper_ball.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\Ball.cpp">
