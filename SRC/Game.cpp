@@ -42,26 +42,46 @@ bool Game::isCharging() const {
 }
 
 void Game::update(float dt) {
-    if (!isCharging()) return;
+    ball.update(dt);
 
-    powerMeter.update(dt);
+    const bool charging = isCharging();
 
-    const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
+    if (charging) {
+        powerMeter.update(dt);
 
-    const float a = degToRad(angleDeg);
-    sf::Vector2f v0{
-        -std::cos(a) * speed,
-        -std::sin(a) * speed
-    };
+        const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
+        const float a = degToRad(angleDeg);
 
-    trajectory.rebuild(
-        ball.getPosition(),
-        v0,
-        Const::Gravity,
-        3.f,
-        0.035f,
-        sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
-    );
+        sf::Vector2f v0{
+            -std::cos(a) * speed,
+            -std::sin(a) * speed
+        };
+
+        trajectory.rebuild(
+            ball.getPosition(),
+            v0,
+            Const::Gravity,
+            3.f,
+            0.035f,
+            sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
+        );
+    }
+
+    if (wasCharging && !charging) {
+        const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
+        const float a = degToRad(angleDeg);
+
+        sf::Vector2f v0{
+            -std::cos(a) * speed,
+            -std::sin(a) * speed
+        };
+
+        sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
+
+        ball.throwBall(v0, Const::Gravity, vp);
+    }
+
+    wasCharging = charging;
 }
 
 void Game::render() {
