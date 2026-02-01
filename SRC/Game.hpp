@@ -16,7 +16,8 @@ private:
     PowerMeter powerMeter;
     Trajectory trajectory;
 
-    float angleDeg = 30.f;
+    float angleDeg = 45.f;
+    float wasCharging = false;
 
     void initLayout();
     void processEvents();
