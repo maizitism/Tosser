@@ -9,16 +9,14 @@ void Trajectory::rebuild(sf::Vector2f p0, sf::Vector2f v0,
     points.clear();
     sf::Vector2f g{ 0.f, gravity };
 
-    const float depthFactor = Const::DepthFactor;
-
     const sf::Vector2f vp = p0 + sf::Vector2f(Const::vp_x, Const::vp_y);
 
     for (float t = 0.f; t <= tMax; t += dt) {
         sf::Vector2f p = p0 + v0 * t + 0.5f * g * (t * t);
 
         // Perspective compression: farther points get pulled toward vp
-        float k = 1.f / (1.f + t * depthFactor); // k in (0..1]
-        k = std::max(k, 0.08f);
+        float k = 1.f / (1.f + t * Const::DepthFactor); // k in (0..1]
+        k = std::max(k, Const::t_clamp);
         sf::Vector2f pp = vp + (p - vp) * k;
 
         if (!bounds.contains(pp)) break;
