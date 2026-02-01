@@ -1,4 +1,5 @@
 #include "Trajectory.hpp"
+#include "Constants.hpp"
 #include "Math.hpp"
 
 void Trajectory::rebuild(sf::Vector2f p0, sf::Vector2f v0,
@@ -8,9 +9,9 @@ void Trajectory::rebuild(sf::Vector2f p0, sf::Vector2f v0,
     points.clear();
     sf::Vector2f g{ 0.f, gravity };
 
-    const float depthFactor = 1.5f;
+    const float depthFactor = Const::DepthFactor;
 
-    const sf::Vector2f vp = p0 + sf::Vector2f(120.f, -80.f);
+    const sf::Vector2f vp = p0 + sf::Vector2f(Const::vp_x, Const::vp_y);
 
     for (float t = 0.f; t <= tMax; t += dt) {
         sf::Vector2f p = p0 + v0 * t + 0.5f * g * (t * t);
