@@ -1,4 +1,4 @@
-    #include "Game.hpp"
+#include "Game.hpp"
 #include "constants.hpp"
 #include "data.hpp"
 #include "Math.hpp"
@@ -11,6 +11,7 @@ static float degToRad(float deg) {
 
 int Game::run() {
     window.setFramerateLimit(120);
+
     initLayout();
 
     while (window.isOpen()) {

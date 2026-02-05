@@ -3,13 +3,18 @@
 #include "PowerMeter.hpp"
 #include "Ball.hpp"
 #include "Trajectory.hpp"
+#include "Constants.hpp"
 
 class Game {
 public:
     int run();
 
 private:
-    sf::RenderWindow window{ sf::VideoMode({960, 540}), "SFML works!" };
+    sf::RenderWindow window{
+    sf::VideoMode({ (unsigned)Const::ScreenWidth,
+                    (unsigned)Const::ScreenHeight }),
+    "SFML works!"
+    };
     sf::Clock clock;
 
     Ball ball;
