@@ -35,8 +35,11 @@ float Ball::perspective(float time) const {
 }
 
 void Ball::throwBall(sf::Vector2f vel0,
-    float gravity, sf::Vector2f vanishingPoint) {
+    float gravity, sf::Vector2f vanishingPoint,
+    sf::FloatRect b) {
+
     p0 = sprite.getPosition();
+    bounds = b;
     v0 = vel0;
     g = gravity;
     vp = vanishingPoint;
@@ -62,6 +65,11 @@ void Ball::update(float dt) {
     float k = perspective(t);
 
     const sf::Vector2f pp = vp + (p - vp) * k;
+
+    if (!bounds.contains(pp)) {
+        inFlight = false;
+        return;
+    }
 
     sprite.setPosition(pp);
     sprite.setScale({ baseScale.x * k, baseScale.y * k });
