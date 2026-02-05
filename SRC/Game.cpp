@@ -29,8 +29,7 @@ void Game::initLayout() {
 
     powerMeter.setPosition({ 900.f, 250.f });
 
-    // ensure initial marker placement (already handled, but harmless)
-    powerMeter.update(0.f);
+    powerMeter.reset();
 }
 
 void Game::processEvents() {
@@ -46,6 +45,10 @@ bool Game::isCharging() const {
 void Game::update(float dt) {
     const sf::FloatRect bounds = Const::ScreenBounds();
     ball.update(dt);
+
+    if (ball.consumeJustReset()) {
+        powerMeter.reset();
+    }
 
     const bool charging = isCharging();
 
