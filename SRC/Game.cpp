@@ -49,7 +49,8 @@ void Game::update(float dt) {
 
     const bool charging = isCharging();
 
-    if (charging) {
+    // Only show/update trajectory while aiming (ball not in flight)
+    if (charging && !ball.isInFlight()) {
         powerMeter.update(dt);
 
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
@@ -70,7 +71,8 @@ void Game::update(float dt) {
         );
     }
 
-    if (wasCharging && !charging) {
+    // On release: only throw if not already in flight
+    if (wasCharging && !charging && !ball.isInFlight()) {
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
         const float a = degToRad(angleDeg);
 
@@ -82,10 +84,19 @@ void Game::update(float dt) {
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
         ball.throwBall(v0, Const::Gravity, vp, bounds);
+
+        // Hide the aiming line once the ball is thrown
+        trajectory.clear();
+    }
+
+    // Optional: if user holds Space during flight, keep it hidden
+    if (ball.isInFlight()) {
+        trajectory.clear();
     }
 
     wasCharging = charging;
 }
+
 
 void Game::render() {
     window.clear();
