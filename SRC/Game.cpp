@@ -43,6 +43,7 @@ bool Game::isCharging() const {
 }
 
 void Game::update(float dt) {
+    const sf::FloatRect bounds = Const::ScreenBounds();
     ball.update(dt);
 
     const bool charging = isCharging();
@@ -64,7 +65,7 @@ void Game::update(float dt) {
             Const::Gravity,
             3.f,
             0.035f,
-            sf::FloatRect({ 0.f, 0.f }, { 960.f, 540.f })
+            bounds
         );
     }
 
@@ -79,7 +80,7 @@ void Game::update(float dt) {
 
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
-        ball.throwBall(v0, Const::Gravity, vp);
+        ball.throwBall(v0, Const::Gravity, vp, bounds);
     }
 
     wasCharging = charging;
