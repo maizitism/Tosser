@@ -29,7 +29,6 @@ sf::Vector2f Ball::getPosition() const {
 }
 
 float Ball::perspective(float time) const {
-
     float k = 1.f / (1.f + time * Const::DepthFactor);
     return std::max(k, Const::t_clamp);
 }
@@ -53,10 +52,30 @@ void Ball::throwBall(sf::Vector2f vel0,
     sprite.setScale(baseScale);
 }
 
+void Ball::resetToSpawn() {
+    sprite.setPosition(spawnPos);
+    inFlight = false;
+    resetting = false;
+}
+
+void Ball::setSpawnPosition(sf::Vector2f pos) {
+    spawnPos = pos;
+    sprite.setPosition(pos);
+}
+
+
 void Ball::update(float dt) {
     if (!isInFlight()) return;
 
     t += dt;
+
+    if (resetting) {
+        resetTimer += dt;
+        if (resetTimer >= resetDelay) {
+            resetToSpawn();
+        }
+        return;
+    }
 
     const sf::Vector2f gvec{ 0.f, g };
     const sf::Vector2f p = p0 + v0 * t + 0.5f * gvec * (t * t);
@@ -69,8 +88,11 @@ void Ball::update(float dt) {
 
     if (!bounds.contains(pp)) {
         inFlight = false;
+        resetting = true;
+        resetTimer = 0.f;
         return;
     }
+
 
     sprite.setPosition(pp);
     sprite.setScale({ baseScale.x * k, baseScale.y * k });

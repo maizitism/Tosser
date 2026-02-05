@@ -14,6 +14,7 @@ public:
     void update(float dt);
 
     sf::Vector2f getPosition() const;
+    void setSpawnPosition(sf::Vector2f pos);
 
 private:
     sf::FloatRect bounds{};
@@ -27,9 +28,16 @@ private:
     sf::Vector2f v0{};
     sf::Vector2f vp{};
 
+    bool resetting = false;
+    float resetTimer = 0.f;
+    float resetDelay = 2.f;     // seconds to wait
+    sf::Vector2f spawnPos{};    // original location
+
+
     sf::Vector2f baseScale{ 1.f, 1.f };
     float perspective(float time) const;
     bool isInFlight() const { return inFlight; };
 
+    void resetToSpawn();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };

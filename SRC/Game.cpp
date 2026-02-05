@@ -24,7 +24,8 @@ int Game::run() {
 }
 
 void Game::initLayout() {
-    ball.setPosition({ 750.f, 350.f });
+
+    ball.setSpawnPosition({ 750.f, 350.f });
 
     powerMeter.setPosition({ 900.f, 250.f });
 
