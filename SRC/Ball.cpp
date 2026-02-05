@@ -70,6 +70,16 @@ void Ball::resetToSpawn() {
     state_ = State::Ready;
     resetTimer = 0.f;
     t = 0.f;
+
+    justReset_ = true;
+}
+
+bool Ball::consumeJustReset() {
+    if (justReset_) {
+        justReset_ = false;
+        return true;
+    }
+    return false;
 }
 
 void Ball::update(float dt) {

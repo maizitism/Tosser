@@ -16,6 +16,7 @@ public:
         sf::FloatRect bounds);
 
     bool isInFlight() const { return state_ == State::InFlight; }
+    bool consumeJustReset();
     void update(float dt);
 
 private:
@@ -46,6 +47,8 @@ private:
     float resetDelay = 2.f;
     sf::Vector2f spawnPos{};
 
+    // Reset info
+    bool justReset_ = false;
 private:
     float perspective(float time) const;
     bool isReady() const { return state_ == State::Ready; }
