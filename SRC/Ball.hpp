@@ -6,37 +6,49 @@ public:
     Ball();
 
     void setPosition(sf::Vector2f pos);
+    sf::Vector2f getPosition() const;
+
+    void setSpawnPosition(sf::Vector2f pos);
+
     void throwBall(sf::Vector2f vel0,
         float gravity,
         sf::Vector2f vanishingPoint,
         sf::FloatRect bounds);
-    
+
     void update(float dt);
 
-    sf::Vector2f getPosition() const;
-    void setSpawnPosition(sf::Vector2f pos);
-
 private:
-    sf::FloatRect bounds{};
-    sf::Texture texture;
-    sf::Sprite sprite;
+    enum class State {
+        Ready,      // sitting at spawn
+        InFlight,   // actively simulating
+        Resetting   // waiting resetDelay, then snap back to spawn
+    };
 
-    bool inFlight = false;
+    // Visuals
+    sf::Texture texture;
+    sf::Sprite  sprite;
+    sf::Vector2f baseScale{ 1.f, 1.f };
+
+    // State
+    State state_ = State::Ready;
+
+    // Throw simulation data
+    sf::FloatRect bounds{};
     float t = 0.f;
     float g = 0.f;
     sf::Vector2f p0{};
     sf::Vector2f v0{};
     sf::Vector2f vp{};
 
-    bool resetting = false;
+    // Reset timer
     float resetTimer = 0.f;
-    float resetDelay = 2.f;     // seconds to wait
-    sf::Vector2f spawnPos{};    // original location
+    float resetDelay = 2.f;
+    sf::Vector2f spawnPos{};
 
-
-    sf::Vector2f baseScale{ 1.f, 1.f };
+private:
     float perspective(float time) const;
-    bool isInFlight() const { return inFlight; };
+    bool isReady() const { return state_ == State::Ready; }
+    bool isInFlight() const { return state_ == State::InFlight; }
 
     void resetToSpawn();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -4,12 +4,13 @@
 #include "Ball.hpp"
 #include "constants.hpp"
 
-Ball::Ball() : texture(), sprite(texture){
+Ball::Ball() : texture(), sprite(texture) {
     if (!texture.loadFromFile("ASSETS/paper_ball.png")) {
         std::cerr << "Failed to load paperball\n";
     }
 
     sprite = sf::Sprite(texture);
+
     // Center origin
     const sf::Vector2u size = texture.getSize();
     sprite.setOrigin({ size.x * 0.5f, size.y * 0.5f });
@@ -29,51 +30,66 @@ sf::Vector2f Ball::getPosition() const {
     return sprite.getPosition();
 }
 
+void Ball::setSpawnPosition(sf::Vector2f pos) {
+    spawnPos = pos;
+    sprite.setPosition(pos);
+    sprite.setScale(baseScale);
+
+    state_ = State::Ready;
+    resetTimer = 0.f;
+    t = 0.f;
+}
+
 float Ball::perspective(float time) const {
     float k = 1.f / (1.f + time * Const::DepthFactor);
     return std::max(k, Const::t_clamp);
 }
 
 void Ball::throwBall(sf::Vector2f vel0,
-    float gravity, sf::Vector2f vanishingPoint,
+    float gravity,
+    sf::Vector2f vanishingPoint,
     sf::FloatRect b) {
+    // Only allow throw from Ready
+    if (!isReady()) return;
 
-    if (isInFlight()) return;
     p0 = sprite.getPosition();
     bounds = b;
     v0 = vel0;
     g = gravity;
     vp = vanishingPoint;
-    
+
     t = 0.f;
-    inFlight = true;
+    state_ = State::InFlight;
 }
+
 
 void Ball::resetToSpawn() {
     sprite.setPosition(spawnPos);
-    inFlight = false;
-    resetting = false;
     sprite.setScale(baseScale);
-}
 
-void Ball::setSpawnPosition(sf::Vector2f pos) {
-    spawnPos = pos;
-    sprite.setPosition(pos);
+    state_ = State::Ready;
+    resetTimer = 0.f;
+    t = 0.f;
 }
-
 
 void Ball::update(float dt) {
+    switch (state_) {
+    case State::Ready:
+        // Nothing to do
+        return;
 
-    if (resetting) {
+    case State::Resetting:
         resetTimer += dt;
         if (resetTimer >= resetDelay) {
             resetToSpawn();
         }
         return;
+
+    case State::InFlight:
+        break; // simulate below
     }
 
-    if (!isInFlight()) return;
-
+    // --- InFlight simulation ---
     t += dt;
 
     const sf::Vector2f gvec{ 0.f, g };
@@ -83,8 +99,7 @@ void Ball::update(float dt) {
     const sf::Vector2f pp = vp + (p - vp) * k;
 
     if (!bounds.contains(pp)) {
-        inFlight = false;
-        resetting = true;
+        state_ = State::Resetting;
         resetTimer = 0.f;
         return;
     }
