@@ -29,13 +29,14 @@ sf::Vector2f Ball::getPosition() const {
 }
 
 float Ball::perspective(float time) const {
-    const float power = 2.0f;
 
-    float k = 1.f / (1.f + std::pow(time, power) * Const::DepthFactor);
+    float k = 1.f / (1.f + time * Const::DepthFactor);
     return std::max(k, Const::t_clamp);
 }
 
-void Ball::throwBall(sf::Vector2f vel0, float gravity, sf::Vector2f vanishingPoint) {
+void Ball::throwBall(sf::Vector2f vel0,
+    float gravity, sf::Vector2f vanishingPoint,
+    sf::FloatRect bounds) {
     p0 = sprite.getPosition();
     v0 = vel0;
     g = gravity;
@@ -59,8 +60,7 @@ void Ball::update(float dt) {
 
     // Match Trajectory::rebuild EXACTLY (same k law + same clamp)
 
-    float k = 1.f / (1.f + t * Const::DepthFactor);
-    k = std::max(k, Const::t_clamp);
+    float k = perspective(t);
 
     const sf::Vector2f pp = vp + (p - vp) * k;
 
