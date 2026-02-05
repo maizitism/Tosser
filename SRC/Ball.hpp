@@ -10,7 +10,7 @@ public:
         float gravity,
         sf::Vector2f vanishingPoint,
         sf::FloatRect bounds);
-
+    
     void update(float dt);
 
     sf::Vector2f getPosition() const;
@@ -29,6 +29,7 @@ private:
 
     sf::Vector2f baseScale{ 1.f, 1.f };
     float perspective(float time) const;
+    bool isInFlight() const { return inFlight; };
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
