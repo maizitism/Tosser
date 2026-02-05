@@ -35,8 +35,7 @@ float Ball::perspective(float time) const {
 }
 
 void Ball::throwBall(sf::Vector2f vel0,
-    float gravity, sf::Vector2f vanishingPoint,
-    sf::FloatRect bounds) {
+    float gravity, sf::Vector2f vanishingPoint) {
     p0 = sprite.getPosition();
     v0 = vel0;
     g = gravity;

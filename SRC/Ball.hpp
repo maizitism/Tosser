@@ -6,7 +6,7 @@ public:
     Ball();
 
     void setPosition(sf::Vector2f pos);
-    void throwBall(sf::Vector2f v0, float gravity, sf::Vector2f vanishingPoint, sf::FloatRect bounds);
+    void throwBall(sf::Vector2f v0, float gravity, sf::Vector2f vanishingPoint);
     void update(float dt);
 
     sf::Vector2f getPosition() const;
