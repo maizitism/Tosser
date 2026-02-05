@@ -17,6 +17,7 @@ Ball::Ball() : texture(), sprite(texture){
     // Scale sprite to match your old BallSize
     float desiredDiameter = Const::BallSize * 2.f;
     float scale = desiredDiameter / size.x;
+    baseScale = { scale, scale };
     sprite.setScale({ scale, scale });
 }
 
@@ -46,16 +47,13 @@ void Ball::throwBall(sf::Vector2f vel0,
     
     t = 0.f;
     inFlight = true;
-
-    sf::Vector2f scale = sprite.getScale();
-    baseScale = { scale.x, scale.y };
-    sprite.setScale(baseScale);
 }
 
 void Ball::resetToSpawn() {
     sprite.setPosition(spawnPos);
     inFlight = false;
     resetting = false;
+    sprite.setScale(baseScale);
 }
 
 void Ball::setSpawnPosition(sf::Vector2f pos) {
@@ -65,9 +63,6 @@ void Ball::setSpawnPosition(sf::Vector2f pos) {
 
 
 void Ball::update(float dt) {
-    if (!isInFlight()) return;
-
-    t += dt;
 
     if (resetting) {
         resetTimer += dt;
@@ -77,13 +72,14 @@ void Ball::update(float dt) {
         return;
     }
 
+    if (!isInFlight()) return;
+
+    t += dt;
+
     const sf::Vector2f gvec{ 0.f, g };
     const sf::Vector2f p = p0 + v0 * t + 0.5f * gvec * (t * t);
 
-    // Match Trajectory::rebuild EXACTLY (same k law + same clamp)
-
     float k = perspective(t);
-
     const sf::Vector2f pp = vp + (p - vp) * k;
 
     if (!bounds.contains(pp)) {
@@ -93,10 +89,10 @@ void Ball::update(float dt) {
         return;
     }
 
-
     sprite.setPosition(pp);
     sprite.setScale({ baseScale.x * k, baseScale.y * k });
 }
+
 
 void Ball::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
