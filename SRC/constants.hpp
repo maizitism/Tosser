@@ -10,5 +10,7 @@ namespace Const {
     constexpr float DepthFactor = 1.5f;
     constexpr float vp_x = 120.f;
     constexpr float vp_y = -80.f;
+    inline constexpr float ScreenWidth = 960.f;
+    inline constexpr float ScreenHeight = 540.f;
 }
 
