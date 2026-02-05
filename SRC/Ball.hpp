@@ -15,6 +15,7 @@ public:
         sf::Vector2f vanishingPoint,
         sf::FloatRect bounds);
 
+    bool isInFlight() const { return state_ == State::InFlight; }
     void update(float dt);
 
 private:
@@ -48,7 +49,6 @@ private:
 private:
     float perspective(float time) const;
     bool isReady() const { return state_ == State::Ready; }
-    bool isInFlight() const { return state_ == State::InFlight; }
 
     void resetToSpawn();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
