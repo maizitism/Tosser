@@ -25,12 +25,20 @@ sf::Vector2f PowerMeter::getPosition() const {
 }
 
 void PowerMeter::update(float dt) {
-    // This keeps your old sweep logic but localized:
-    if (increasing) power01 += MarkerData::sweepSpeed * dt;
-    else            power01 -= MarkerData::sweepSpeed * dt;
 
-    if (power01 >= 1.f) { power01 = 1.f; increasing = false; }
-    if (power01 <= 0.f) { power01 = 0.f; increasing = true; }
+    if (direction == SweepDirection::Up)
+        power01 += MarkerData::sweepSpeed * dt;
+    else
+        power01 -= MarkerData::sweepSpeed * dt;
+
+    if (power01 >= 1.f) {
+        power01 = 1.f;
+        direction = SweepDirection::Down;
+    }
+    if (power01 <= 0.f) {
+        power01 = 0.f;
+        direction = SweepDirection::Up;
+    }
 
     updateMarkerPosition();
 }
@@ -45,6 +53,12 @@ void PowerMeter::updateMarkerPosition() {
 
     const float y = top + (1.f - power01) * Const::PowerMeterH; // 1 at top, 0 at bottom
     marker.setPosition({ c.x, y });
+}
+
+void PowerMeter::reset() {
+    power01 = 0.5f;
+    direction = SweepDirection::Up;
+    updateMarkerPosition();
 }
 
 void PowerMeter::draw(sf::RenderTarget& target, sf::RenderStates states) const {
