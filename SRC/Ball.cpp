@@ -38,7 +38,7 @@ void Ball::throwBall(sf::Vector2f vel0,
     float gravity, sf::Vector2f vanishingPoint,
     sf::FloatRect b) {
 
-    if (isInFlight) return;
+    if (isInFlight()) return;
     p0 = sprite.getPosition();
     bounds = b;
     v0 = vel0;
@@ -54,7 +54,7 @@ void Ball::throwBall(sf::Vector2f vel0,
 }
 
 void Ball::update(float dt) {
-    if (!isInFlight) return;
+    if (!isInFlight()) return;
 
     t += dt;
 
