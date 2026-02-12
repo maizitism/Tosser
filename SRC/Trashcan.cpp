@@ -1,4 +1,5 @@
 #include "Trashcan.hpp"
+#include "Math.hpp"
 #include <iostream>
 
 TrashCan::TrashCan() : texture(), sprite(texture) {
@@ -10,7 +11,7 @@ TrashCan::TrashCan() : texture(), sprite(texture) {
 
     // Set default origin
     const sf::Vector2u s = texture.getSize();
-    sprite.setOrigin({ s.x * 0.5f, (float)s.y });
+    sprite.setOrigin({ s.x * 0.5f, static_cast<float>(s.y) });
 }
 
 void TrashCan::setPosition(sf::Vector2f pos) {
@@ -39,6 +40,47 @@ sf::FloatRect TrashCan::getOpeningRect() const {
 
 void TrashCan::setScale(float s) {
     sprite.setScale({ s, s });
+}
+
+void TrashCan::setDepthRange(float closeX, float farX, float closeY, float farY) {
+    closeX_ = closeX; farX_ = farX;
+    closeY_ = closeY; farY_ = farY;
+}
+
+void TrashCan::setScaleRange(float closeScale, float farScale) {
+    closeScale_ = closeScale;
+    farScale_ = farScale;
+}
+
+void TrashCan::advance(int score) {
+    // 0 -> close (easy), 1 -> far (hard)
+    float t = clamp01(static_cast<float>(score) / static_cast<float>(rampScore_));
+
+    // Move away + shrink as score grows
+    float x = lerp(closeX_, farX_, t);
+    float y = lerp(closeY_, farY_, t);
+    float s = lerp(closeScale_, farScale_, t);
+
+    float jxAmt = lerp(jitterX_ * 0.35f, jitterX_, t);
+    float jyAmt = lerp(jitterY_ * 0.35f, jitterY_, t);
+
+    std::uniform_real_distribution<float> jx(-jxAmt, jxAmt);
+    std::uniform_real_distribution<float> jy(-jyAmt, jyAmt);
+
+    x += jx(rng_);
+    y += jy(rng_);
+
+    // Clamp within the close<->far corridor so it never jumps wildly
+    const float xMin = std::min(closeX_, farX_);
+    const float xMax = std::max(closeX_, farX_);
+    const float yMin = std::min(closeY_, farY_);
+    const float yMax = std::max(closeY_, farY_);
+
+    x = std::clamp(x, xMin, xMax);
+    y = std::clamp(y, yMin, yMax);
+
+    setPosition({ x, y });
+    setScale(s);
 }
 
 void TrashCan::draw(sf::RenderTarget& target, sf::RenderStates states) const {
