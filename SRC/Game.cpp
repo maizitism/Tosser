@@ -2,6 +2,7 @@
 #include "constants.hpp"
 #include "data.hpp"
 #include "Math.hpp"
+#include <iostream>
 #include <optional>
 #include <cmath>
 
@@ -26,10 +27,21 @@ int Game::run() {
 void Game::initLayout() {
 
     ball.setSpawnPosition({ 750.f, 350.f });
-
     powerMeter.setPosition({ 900.f, 250.f });
-
     powerMeter.reset();
+
+    // (alleged) Trashcan placement
+    trashCan.setPosition({ 270.f, 470.f });
+    trashCan.setScale(0.2f);
+
+    // UI
+    if (!uiFont.openFromFile("ASSETS/ui.ttf")) {
+        std::cout << "Font file could not be loaded. Text will not be rendered." << std::endl;
+    }
+    scoreText.setFont(uiFont);
+    scoreText.setCharacterSize(28);
+    scoreText.setPosition({ 16.f, 12.f });
+    scoreText.setString("Score: 0");
 }
 
 void Game::processEvents() {
@@ -48,11 +60,27 @@ void Game::update(float dt) {
 
     if (ball.consumeJustReset()) {
         powerMeter.reset();
+        scoredThisFlight = false; // ready for next throw
     }
 
-    const bool charging = isCharging();
+    // --- scoring: detect ball center entering trashcan opening rect ---
+    if (ball.isInFlight() && !scoredThisFlight) {
+        const sf::FloatRect open = trashCan.getOpeningRect(); // SFML3 rect type
+        if (open.findIntersection(ball.getBounds()).has_value()) {
+            scoredThisFlight = true;
+            score += 1;
+            scoreText.setString("Score: " + std::to_string(score));
+
+            // reset ball quickly after scoring
+            ball.beginReset(0.35f);
+
+            // hide trajectory
+            trajectory.clear();
+        }
+    }
 
     // Only show/update trajectory while aiming (ball not in flight)
+    const bool charging = isCharging();
     if (charging && !ball.isInFlight()) {
         powerMeter.update(dt);
 
@@ -102,8 +130,10 @@ void Game::update(float dt) {
 
 void Game::render() {
     window.clear();
+    window.draw(trashCan);    
+    window.draw(trajectory);
     window.draw(ball);
     window.draw(powerMeter);
-    window.draw(trajectory);
+    window.draw(scoreText);
     window.display();
 }

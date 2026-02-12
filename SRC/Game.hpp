@@ -4,6 +4,7 @@
 #include "Ball.hpp"
 #include "Trajectory.hpp"
 #include "Constants.hpp"
+#include "Trashcan.hpp"
 
 class Game {
 public:
@@ -20,6 +21,13 @@ private:
     Ball ball;
     PowerMeter powerMeter;
     Trajectory trajectory;
+    TrashCan trashCan;
+
+    int score = 0;
+    bool scoredThisFlight = false;
+
+    sf::Font uiFont;
+    sf::Text scoreText{ uiFont };
 
     float angleDeg = 45.f;
     float wasCharging = false;
