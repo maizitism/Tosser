@@ -34,6 +34,7 @@ sf::FloatRect TrashCan::getOpeningRect() const {
     r.size.x = b.size.x * openingWidthPct;
     r.size.y = b.size.y * openingHeightPct;
 
+    return r;
 }
 
 void TrashCan::draw(sf::RenderTarget& target, sf::RenderStates states) const {
