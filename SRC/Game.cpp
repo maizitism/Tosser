@@ -32,7 +32,19 @@ void Game::initLayout() {
 
     // (alleged) Trashcan placement
     trashCan.setPosition({ 270.f, 470.f });
-    trashCan.setScale(0.2f);
+    trashCan.setDepthRange(
+        420.f,  // closeX (easier)
+        270.f,  // farX   (harder)
+        395.f,  // closeY (higher/nearer in your illusion)
+        470.f   // farY   (lower/farther)
+    );
+
+    trashCan.setScaleRange(
+        0.36f,  // closeScale (bigger)
+        0.20f   // farScale   (smaller)
+    );
+
+    trashCan.advance(score); // initial placement
 
     // UI
     if (!uiFont.openFromFile("ASSETS/ui.ttf")) {
@@ -70,6 +82,7 @@ void Game::update(float dt) {
             scoredThisFlight = true;
             score += 1;
             scoreText.setString("Score: " + std::to_string(score));
+            trashCan.advance(score);
 
             // reset ball quickly after scoring
             ball.beginReset(0.35f);
