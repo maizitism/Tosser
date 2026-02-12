@@ -30,7 +30,7 @@
     <ClCompile Include="SRC\Math.cpp" />
     <ClCompile Include="SRC\PowerMeter.cpp" />
     <ClCompile Include="SRC\Trajectory.cpp" />
-    <ClCompile Include="Trashcan.cpp" />
+    <ClCompile Include="SRC\Trashcan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SRC\Ball.hpp" />
@@ -41,7 +41,7 @@
     <ClInclude Include="SRC\Math.hpp" />
     <ClInclude Include="SRC\PowerMeter.hpp" />
     <ClInclude Include="SRC\Trajectory.hpp" />
-    <ClInclude Include="Trashcan.hpp" />
+    <ClInclude Include="SRC\Trashcan.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
