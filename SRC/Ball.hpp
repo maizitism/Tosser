@@ -7,6 +7,7 @@ public:
 
     void setPosition(sf::Vector2f pos);
     sf::Vector2f getPosition() const;
+    sf::FloatRect getBounds() const;
 
     void setSpawnPosition(sf::Vector2f pos);
 

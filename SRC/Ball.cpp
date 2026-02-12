@@ -30,6 +30,10 @@ sf::Vector2f Ball::getPosition() const {
     return sprite.getPosition();
 }
 
+sf::FloatRect Ball::getBounds() const {
+    return sprite.getGlobalBounds();
+}
+
 void Ball::setSpawnPosition(sf::Vector2f pos) {
     spawnPos = pos;
     sprite.setPosition(pos);
