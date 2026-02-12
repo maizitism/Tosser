@@ -12,6 +12,8 @@ public:
 
     sf::FloatRect getOpeningRect() const;
 
+    void setScale(float s);
+
 private:
     sf::Texture texture;
     sf::Sprite sprite;

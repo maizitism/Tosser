@@ -37,6 +37,10 @@ sf::FloatRect TrashCan::getOpeningRect() const {
     return r;
 }
 
+void TrashCan::setScale(float s) {
+    sprite.setScale({ s, s });
+}
+
 void TrashCan::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
 
