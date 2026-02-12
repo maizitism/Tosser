@@ -16,6 +16,8 @@ public:
         sf::FloatRect bounds);
 
     bool isInFlight() const { return state_ == State::InFlight; }
+
+    void beginReset(float delaySeconds = 0.5f);
     bool consumeJustReset();
     void update(float dt);
 

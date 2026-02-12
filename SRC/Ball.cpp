@@ -74,6 +74,13 @@ void Ball::resetToSpawn() {
     justReset_ = true;
 }
 
+void Ball::beginReset(float delaySeconds) {
+    // allow forcing a reset from flight or ready
+    resetDelay = delaySeconds;
+    state_ = State::Resetting;
+    resetTimer = 0.f;
+}
+
 bool Ball::consumeJustReset() {
     if (justReset_) {
         justReset_ = false;
