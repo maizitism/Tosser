@@ -21,6 +21,9 @@
     <Image Include="ASSETS\paper_ball.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="ASSETS\trashcan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\Ball.cpp">
@@ -30,9 +33,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SRC\Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\Trajectory.cpp">
@@ -76,5 +76,10 @@
     <ClInclude Include="SRC\Trashcan.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ASSETS\ui.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

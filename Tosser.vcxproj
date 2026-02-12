@@ -21,13 +21,13 @@
   <ItemGroup>
     <Image Include="ASSETS\paper_ball.png" />
     <Image Include="ASSETS\snow.png" />
+    <Image Include="ASSETS\trashcan.png" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\Ball.cpp" />
     <ClCompile Include="SRC\Game.cpp" />
     <ClCompile Include="SRC\GradientBar.cpp" />
     <ClCompile Include="SRC\main.cpp" />
-    <ClCompile Include="SRC\Math.cpp" />
     <ClCompile Include="SRC\PowerMeter.cpp" />
     <ClCompile Include="SRC\Trajectory.cpp" />
     <ClCompile Include="SRC\Trashcan.cpp" />
@@ -42,6 +42,9 @@
     <ClInclude Include="SRC\PowerMeter.hpp" />
     <ClInclude Include="SRC\Trajectory.hpp" />
     <ClInclude Include="SRC\Trashcan.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ASSETS\ui.TTF" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
