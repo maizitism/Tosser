@@ -44,6 +44,9 @@
     <ClCompile Include="SRC\GradientBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Trashcan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SRC\data.hpp">
@@ -68,6 +71,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRC\GradientBar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trashcan.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

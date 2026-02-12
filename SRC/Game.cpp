@@ -92,7 +92,6 @@ void Game::update(float dt) {
         trajectory.clear();
     }
 
-    // Optional: if user holds Space during flight, keep it hidden
     if (ball.isInFlight()) {
         trajectory.clear();
     }
