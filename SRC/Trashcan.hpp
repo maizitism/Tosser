@@ -36,6 +36,11 @@ private:
     float jitterX_ = 35.f;
     float jitterY_ = 18.f;
 
+    // stuff for scaling the same as the ball
+    float tMax_ = 0.f;
+    float perspective(float t) const;
+
+
 
     std::mt19937 rng_{ std::random_device{}() };
 
