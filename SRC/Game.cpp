@@ -81,7 +81,12 @@ void Game::update(float dt) {
 
     if (ball.consumeJustReset()) {
         powerMeter.reset();
-        scoredThisFlight = false; // ready for next throw
+        scoredThisFlight = false;
+
+        if (advanceAfterReset) {
+            trashCan.advance(score);
+            advanceAfterReset = false;
+        }
     }
 
     // --- scoring: detect ball center entering trashcan opening rect ---
@@ -91,10 +96,20 @@ void Game::update(float dt) {
             scoredThisFlight = true;
             score += 1;
             scoreText.setString("Score: " + std::to_string(score));
-            trashCan.advance(score);
 
-            // reset ball quickly after scoring
-            ball.beginReset(0.35f);
+            // Defer trashcan movement until the ball actually resets
+            advanceAfterReset = true;
+
+            // Sink target: center of opening + a small downward push
+            const sf::FloatRect openRect = trashCan.getOpeningRect();
+            sf::Vector2f sinkTarget{
+                openRect.position.x + openRect.size.x * 0.5f,
+                openRect.position.y + openRect.size.y * 0.65f  // a bit down inside the opening
+            };
+
+            // Sink (0.18s), then wait (0.35s), then reset
+            ball.sinkInto(sinkTarget, 0.18f, 0.35f, 0.55f);
+
 
             // hide trajectory
             trajectory.clear();

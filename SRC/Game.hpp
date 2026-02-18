@@ -25,6 +25,8 @@ private:
 
     int score = 0;
     bool scoredThisFlight = false;
+    bool advanceAfterReset = false;
+
 
     sf::Font uiFont;
     sf::Text scoreText {uiFont};
