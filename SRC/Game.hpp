@@ -5,12 +5,18 @@
 #include "Trajectory.hpp"
 #include "Constants.hpp"
 #include "Trashcan.hpp"
+#include "UI.hpp"
+
+#include <memory>
+
 
 class Game {
 public:
     int run();
 
 private:
+    std::unique_ptr<UI> ui;
+
     sf::RenderWindow window{
     sf::VideoMode({ (unsigned)Const::ScreenWidth,
                     (unsigned)Const::ScreenHeight }),

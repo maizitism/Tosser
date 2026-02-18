@@ -9,7 +9,44 @@
 int Game::run() {
     window.setFramerateLimit(120);
 
-    initLayout();
+    // Load font once
+    if (!uiFont.openFromFile("ASSETS/ui.ttf")) {
+        std::cout << "Font file could not be loaded. Text will not be rendered.\n";
+    }
+
+    if (!backgroundTex.loadFromFile("ASSETS/blurred_office_background.jpg")) {
+        std::cerr << "Background could not be loaded.\n";
+    }
+    else {
+        backgroundSpr.setTexture(backgroundTex, true);
+        backgroundSpr.setPosition({ 0.f, 0.f });
+    }
+
+    // Create UI
+    ui = std::make_unique<UI>(window, uiFont);
+    ui->setCallbacks(UI::Callbacks{
+        .onStart = [&]() {
+            // reset gameplay state & init layout
+            score = 0;
+            scoredThisFlight = false;
+            advanceAfterReset = false;
+            trajectory.clear();
+
+            initLayout();             
+            ui->setScene(UI::Scene::Playing);
+        },
+        .onExit = [&]() { window.close(); },
+        .onBackToMenu = [&]() { },
+        .onResetDefaults = [&]() {
+            Const::Gravity = Const::GravityDefault;
+            Const::DepthFactor = Const::DepthFactorDefault;
+            Const::t_clamp = Const::t_clampDefault;
+            Const::vp_x = Const::vp_xDefault;
+            Const::vp_y = Const::vp_yDefault;
+        }
+        });
+
+    //initLayout();
 
     while (window.isOpen()) {
         const float dt = clock.restart().asSeconds();
@@ -30,7 +67,7 @@ void Game::initLayout() {
     trashCan.setDepthRange(
         420.f,  // closeX (easier)
         270.f,  // farX   (harder)
-        395.f,  // closeY (higher/nearer in your illusion)
+        395.f,  // closeY (higher/nearer)
         470.f   // farY   (lower/farther)
     );
 
@@ -41,29 +78,36 @@ void Game::initLayout() {
 
     trashCan.advance(score); // initial placement
 
-    // UI
-    if (!uiFont.openFromFile("ASSETS/ui.ttf")) {
-        std::cout << "Font file could not be loaded. Text will not be rendered." << std::endl;
-    }
     scoreText.setFont(uiFont);
     scoreText.setCharacterSize(28);
     scoreText.setPosition({ 16.f, 12.f });
     scoreText.setString("Score: 0");
 
-    // Background
-    if (!backgroundTex.loadFromFile("ASSETS/blurred_office_background.jpg")) {
-        std::cerr << "Background could not be loaded.\n";
-    }
-    else {
-        backgroundSpr.setTexture(backgroundTex, true);
-        backgroundSpr.setPosition({ 0.f, 0.f });
-    }
-
 }
 
 void Game::processEvents() {
     while (const std::optional event = window.pollEvent()) {
-        if (event->is<sf::Event::Closed>()) window.close();
+        if (event->is<sf::Event::Closed>()) {
+            window.close();
+            continue;
+        }
+
+        // Esc in Playing returns to menu
+        if (ui && ui->getScene() == UI::Scene::Playing) {
+            if (event->is<sf::Event::KeyPressed>()) {
+                if (auto* kp = event->getIf<sf::Event::KeyPressed>()) {
+                    if (kp->code == sf::Keyboard::Key::Escape) {
+                        ui->setScene(UI::Scene::Menu);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        // Let UI handle inputs when not playing
+        if (ui && (ui->getScene() == UI::Scene::Menu || ui->getScene() == UI::Scene::Options)) {
+            ui->handleEvent(*event);
+        }
     }
 }
 
@@ -164,7 +208,15 @@ void Game::update(float dt) {
 void Game::render() {
     window.clear();
     window.draw(backgroundSpr);
-    window.draw(trashCan);    
+
+    if (ui && (ui->getScene() == UI::Scene::Menu || ui->getScene() == UI::Scene::Options)) {
+        ui->render(window);
+        window.display();
+        return;
+    }
+
+    // Playing render (your current render order)
+    window.draw(trashCan);
     window.draw(trajectory);
     window.draw(ball);
     window.draw(powerMeter);
