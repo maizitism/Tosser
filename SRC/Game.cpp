@@ -6,10 +6,6 @@
 #include <optional>
 #include <cmath>
 
-static float degToRad(float deg) {
-    return deg * Const::PI / 180.f;
-}
-
 int Game::run() {
     window.setFramerateLimit(120);
 

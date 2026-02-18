@@ -29,7 +29,7 @@ private:
 
 
     sf::Font uiFont;
-    sf::Text scoreText {uiFont};
+    sf::Text scoreText { uiFont };
 
     sf::Texture backgroundTex;
     sf::Sprite  backgroundSpr {backgroundTex};
