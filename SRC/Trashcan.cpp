@@ -54,7 +54,7 @@ void TrashCan::setScaleRange(float closeScale, float farScale) {
 
 void TrashCan::advance(int score) {
     // 0 -> close (easy), 1 -> far (hard)
-    float t = clamp01(static_cast<float>(score) / static_cast<float>(rampScore_));
+    float t = std::clamp(static_cast<float>(score) / static_cast<float>(rampScore_), 0.f, 1.f);
 
     // Move away + shrink as score grows
     float x = lerp(closeX_, farX_, t);
