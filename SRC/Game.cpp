@@ -25,7 +25,6 @@ int Game::run() {
 }
 
 void Game::initLayout() {
-
     ball.setSpawnPosition({ 750.f, 350.f });
     powerMeter.setPosition({ 900.f, 250.f });
     powerMeter.reset();
@@ -54,6 +53,16 @@ void Game::initLayout() {
     scoreText.setCharacterSize(28);
     scoreText.setPosition({ 16.f, 12.f });
     scoreText.setString("Score: 0");
+
+    // Background
+    if (!backgroundTex.loadFromFile("ASSETS/blurred_office_background.jpg")) {
+        std::cerr << "Background could not be loaded.\n";
+    }
+    else {
+        backgroundSpr.setTexture(backgroundTex, true);
+        backgroundSpr.setPosition({ 0.f, 0.f });
+    }
+
 }
 
 void Game::processEvents() {
@@ -143,6 +152,7 @@ void Game::update(float dt) {
 
 void Game::render() {
     window.clear();
+    window.draw(backgroundSpr);
     window.draw(trashCan);    
     window.draw(trajectory);
     window.draw(ball);

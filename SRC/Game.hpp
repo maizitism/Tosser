@@ -27,10 +27,13 @@ private:
     bool scoredThisFlight = false;
 
     sf::Font uiFont;
-    sf::Text scoreText{ uiFont };
+    sf::Text scoreText {uiFont};
+
+    sf::Texture backgroundTex;
+    sf::Sprite  backgroundSpr {backgroundTex};
 
     float angleDeg = 45.f;
-    float wasCharging = false;
+    bool wasCharging = false;
 
     void initLayout();
     void processEvents();
