@@ -47,6 +47,9 @@
     <ClCompile Include="SRC\Trashcan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SRC\data.hpp">
@@ -74,6 +77,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SRC\Trashcan.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\UI.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

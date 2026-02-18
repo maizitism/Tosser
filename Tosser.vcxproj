@@ -31,6 +31,7 @@
     <ClCompile Include="SRC\PowerMeter.cpp" />
     <ClCompile Include="SRC\Trajectory.cpp" />
     <ClCompile Include="SRC\Trashcan.cpp" />
+    <ClCompile Include="SRC\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SRC\Ball.hpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="SRC\PowerMeter.hpp" />
     <ClInclude Include="SRC\Trajectory.hpp" />
     <ClInclude Include="SRC\Trashcan.hpp" />
+    <ClInclude Include="SRC\UI.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ASSETS\ui.TTF" />
