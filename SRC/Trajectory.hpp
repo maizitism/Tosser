@@ -9,9 +9,13 @@ public:
         sf::FloatRect bounds);
 
     void clear();
+    void setDotRadius(float r) { dotRadius = r; }
+    void setDotColor(sf::Color c) { dotColor = c; }
 
 private:
-    sf::VertexArray points{ sf::PrimitiveType::Points };
+    std::vector<sf::CircleShape> dots;
+    float dotRadius = 3.f;
+    sf::Color dotColor = sf::Color(30, 30, 30, 220);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
