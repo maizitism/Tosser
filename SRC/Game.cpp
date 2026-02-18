@@ -118,7 +118,7 @@ void Game::update(float dt) {
 
     // Only show/update trajectory while aiming (ball not in flight)
     const bool charging = isCharging();
-    if (charging && !ball.isInFlight()) {
+    if (charging && ball.isReady()) {
         powerMeter.update(dt);
 
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
@@ -140,7 +140,7 @@ void Game::update(float dt) {
     }
 
     // On release: only throw if not already in flight
-    if (wasCharging && !charging && !ball.isInFlight()) {
+    if (wasCharging && !charging && ball.isReady()) {
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
         const float a = degToRad(angleDeg);
 
@@ -157,7 +157,7 @@ void Game::update(float dt) {
         trajectory.clear();
     }
 
-    if (ball.isInFlight()) {
+    if (!ball.isReady()) {
         trajectory.clear();
     }
 

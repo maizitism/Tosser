@@ -17,11 +17,12 @@ public:
         sf::FloatRect bounds);
 
     bool isInFlight() const { return state_ == State::InFlight; }
+    bool isReady() const { return state_ == State::Ready; }
+
     void sinkInto(sf::Vector2f target,
         float sinkTime = 0.18f,
         float waitTime = 0.35f,
         float scaleFactor = 0.55f);
-
 
     void beginReset(float delaySeconds = 0.5f);
     bool consumeJustReset();
@@ -67,9 +68,9 @@ private:
 
     // Reset info
     bool justReset_ = false;
+   
 private:
     float perspective(float time) const;
-    bool isReady() const { return state_ == State::Ready; }
 
     void resetToSpawn();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
