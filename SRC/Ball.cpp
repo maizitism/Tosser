@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include "Math.hpp"
 #include "Ball.hpp"
 #include "constants.hpp"
 
@@ -66,7 +67,6 @@ void Ball::throwBall(sf::Vector2f vel0,
     state_ = State::InFlight;
 }
 
-
 void Ball::resetToSpawn() {
     sprite.setPosition(spawnPos);
     sprite.setScale(baseScale);
@@ -93,6 +93,20 @@ bool Ball::consumeJustReset() {
     return false;
 }
 
+void Ball::sinkInto(sf::Vector2f target, float sinkTime, float waitTime, float scaleFactor) {
+    sinkStartPos = sprite.getPosition();
+    sinkTargetPos = target;
+
+    sinkStartScale = sprite.getScale();
+    sinkTargetScale = { sinkStartScale.x * scaleFactor, sinkStartScale.y * scaleFactor };
+
+    sinkDuration = std::max(0.001f, sinkTime);
+    sinkWait = std::max(0.f, waitTime);
+
+    sinkT = 0.f;
+    state_ = State::Sinking;
+}
+
 void Ball::update(float dt) {
     switch (state_) {
     case State::Ready:
@@ -105,6 +119,26 @@ void Ball::update(float dt) {
             resetToSpawn();
         }
         return;
+
+    case State::Sinking: {
+        sinkT += dt;
+
+        // Phase A: sink movement (0 .. sinkDuration)
+        float a = std::min(sinkT / sinkDuration, 1.f);
+        float e = smoothstep(a);
+
+        sf::Vector2f pos = sinkStartPos + (sinkTargetPos - sinkStartPos) * e;
+        sf::Vector2f sc = sinkStartScale + (sinkTargetScale - sinkStartScale) * e;
+
+        sprite.setPosition(pos);
+        sprite.setScale(sc);
+
+        // Phase B: after sink completes, wait, then reset
+        if (sinkT >= sinkDuration + sinkWait) {
+            resetToSpawn();
+        }
+        return;
+    }
 
     case State::InFlight:
         break; // simulate below
@@ -120,8 +154,7 @@ void Ball::update(float dt) {
     const sf::Vector2f pp = vp + (p - vp) * k;
 
     if (!bounds.contains(pp)) {
-        state_ = State::Resetting;
-        resetTimer = 0.f;
+        beginReset(0.5f);
         return;
     }
 

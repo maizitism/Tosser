@@ -17,6 +17,11 @@ public:
         sf::FloatRect bounds);
 
     bool isInFlight() const { return state_ == State::InFlight; }
+    void sinkInto(sf::Vector2f target,
+        float sinkTime = 0.18f,
+        float waitTime = 0.35f,
+        float scaleFactor = 0.55f);
+
 
     void beginReset(float delaySeconds = 0.5f);
     bool consumeJustReset();
@@ -26,6 +31,7 @@ private:
     enum class State {
         Ready,      // sitting at spawn
         InFlight,   // actively simulating
+        Sinking,    // sink into trashcan
         Resetting   // waiting resetDelay, then snap back to spawn
     };
 
@@ -36,6 +42,15 @@ private:
 
     // State
     State state_ = State::Ready;
+
+    // Sink animation data
+    sf::Vector2f sinkStartPos{};
+    sf::Vector2f sinkTargetPos{};
+    sf::Vector2f sinkStartScale{};
+    sf::Vector2f sinkTargetScale{};
+    float sinkT = 0.f;
+    float sinkDuration = 0.18f;
+    float sinkWait = 0.35f;
 
     // Throw simulation data
     sf::FloatRect bounds{};
