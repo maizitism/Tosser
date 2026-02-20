@@ -107,7 +107,7 @@ void Game::initLayout() {
     throwsText.setString("Throws: " + std::to_string(throwsLeft));
 
     windAx = windDist(windRng);
-    Const::WindAccelX = windAx;     // this is what Ball will use
+    Const::WindAccelX = windAx;
     throwsTaken = 0;
 
     windText.setFont(uiFont);
