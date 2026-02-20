@@ -120,11 +120,11 @@ void TrashCan::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
 
     // debug stuff
-    sf::RectangleShape dbg;
-    auto r = getOpeningRect();
-    dbg.setPosition(r.position);
-    dbg.setSize(r.size);
-    dbg.setFillColor(sf::Color(255, 0, 0, 80));
-    target.draw(dbg, states);
+    //sf::RectangleShape dbg;
+    //auto r = getOpeningRect();
+    //dbg.setPosition(r.position);
+    //dbg.setSize(r.size);
+    //dbg.setFillColor(sf::Color(255, 0, 0, 80));
+    //target.draw(dbg, states);
     
 }
