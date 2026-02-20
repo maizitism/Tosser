@@ -6,6 +6,7 @@
 #include "Constants.hpp"
 #include "Trashcan.hpp"
 #include "UI.hpp"
+#include "Audio.hpp"
 
 #include <memory>
 
@@ -16,6 +17,7 @@ public:
 
 private:
     std::unique_ptr<UI> ui;
+    Audio audio;
 
     sf::RenderWindow window{
     sf::VideoMode({ (unsigned)Const::ScreenWidth,
