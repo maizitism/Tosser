@@ -47,7 +47,7 @@ private:
     float windAx = 0.f;          // current wind acceleration (px/s^2)
     int throwsTaken = 0;         // total throws made this round
     std::mt19937 windRng{ std::random_device{}() };
-    std::uniform_real_distribution<float> windDist{ -400.f, 400.f };
+    std::uniform_real_distribution<float> windDist{ -200.f, 200.f };
 
     // Arcade "fixed throw" system
     int maxThrows = 20;
