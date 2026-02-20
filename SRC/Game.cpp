@@ -145,6 +145,22 @@ void Game::update(float dt) {
 
     if (ball.consumeJustReset()) {
         powerMeter.reset();
+
+        // If a throw ended and it wasn't scored -> lose a life
+        if (throwInProgress && !lastThrowScored) {
+            lives = std::max(0, lives - 1);
+            livesText.setString("Lives: " + std::to_string(lives));
+
+            if (lives == 0) {
+                gameOver = true;
+                trajectory.clear();
+            }
+        }
+
+        // Clear throw state at reset
+        throwInProgress = false;
+        lastThrowScored = false;
+
         scoredThisFlight = false;
 
         if (advanceAfterReset) {
