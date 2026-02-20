@@ -84,6 +84,16 @@ void Game::initLayout() {
     scoreText.setPosition({ 16.f, 12.f });
     scoreText.setString("Score: 0");
 
+    throwsLeft = maxThrows;
+
+    throwsText.setFont(uiFont);
+    throwsText.setCharacterSize(28);
+    throwsText.setOutlineThickness(2.f);
+    throwsText.setOutlineColor(sf::Color(0, 0, 0, 200));
+    throwsText.setFillColor(sf::Color(255, 255, 255, 235));
+    throwsText.setPosition({ 16.f, 76.f });
+    throwsText.setString("Throws: " + std::to_string(throwsLeft));
+
     // Lives
     lives = maxLives;
     throwInProgress = false;
@@ -180,6 +190,11 @@ void Game::update(float dt) {
             trashCan.advance(score);
             advanceAfterReset = false;
         }
+
+        if (throwsLeft == 0 && !gameOver) {
+            gameOver = true;
+            trajectory.clear();
+        }
     }
 
     // --- scoring: detect ball center entering trashcan opening rect ---
@@ -248,6 +263,8 @@ void Game::update(float dt) {
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
         ball.throwBall(v0, Const::Gravity, Const::WindAccelX, vp, bounds);
+        throwsLeft = std::max(0, throwsLeft - 1);
+        throwsText.setString("Throws: " + std::to_string(throwsLeft));
         
         throwInProgress = true;
         lastThrowScored = false;
@@ -281,6 +298,7 @@ void Game::render() {
     window.draw(powerMeter);
     window.draw(scoreText);
     window.draw(livesText);
+    window.draw(throwsText);
 
     if (gameOver) {
         window.draw(gameOverText);
