@@ -135,6 +135,11 @@ bool Game::isCharging() const {
 }
 
 void Game::update(float dt) {
+    if (ui && ui->getScene() != UI::Scene::Playing) {
+        ui->update(dt);
+        return;
+    }
+    
     const sf::FloatRect bounds = Const::ScreenBounds();
     ball.update(dt);
 
