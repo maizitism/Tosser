@@ -144,7 +144,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>LIB\SFML3.0.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;opengl32.lib;freetype.lib;sfml-window-s-d.lib;winmm.lib;sfml-system-s-d.lib;sfml-audio-s.lib;flacd.lib;vorbisencd.lib;vorbisfiled.lib;vorbisd.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;opengl32.lib;freetype.lib;sfml-window-s-d.lib;winmm.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;flacd.lib;vorbisencd.lib;vorbisfiled.lib;vorbisd.lib;oggd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
