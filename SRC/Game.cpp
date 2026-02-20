@@ -140,6 +140,15 @@ void Game::update(float dt) {
         return;
     }
     
+    if (gameOver) {
+        // Press Enter or Space to go back to menu
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) ||
+            sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            ui->setScene(UI::Scene::Menu);
+        }
+        return; // freeze gameplay
+    }
+
     const sf::FloatRect bounds = Const::ScreenBounds();
     ball.update(dt);
 
@@ -174,6 +183,7 @@ void Game::update(float dt) {
         const sf::FloatRect open = trashCan.getOpeningRect(); // SFML3 rect type
         if (open.findIntersection(ball.getBounds()).has_value()) {
             scoredThisFlight = true;
+            lastThrowScored = true;
             score += 1;
             scoreText.setString("Score: " + std::to_string(score));
 
@@ -198,7 +208,7 @@ void Game::update(float dt) {
 
     // Only show/update trajectory while aiming (ball not in flight)
     const bool charging = isCharging();
-    if (charging && ball.isReady()) {
+    if (charging && ball.isReady() && !gameOver) {
         powerMeter.update(dt);
 
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
@@ -220,7 +230,7 @@ void Game::update(float dt) {
     }
 
     // On release: only throw if not already in flight
-    if (wasCharging && !charging && ball.isReady()) {
+    if (wasCharging && !charging && ball.isReady() && !gameOver) {
         const float speed = lerp(MarkerData::throwSpeedMin, MarkerData::throwSpeedMax, powerMeter.power());
         const float a = degToRad(angleDeg);
 
@@ -232,6 +242,9 @@ void Game::update(float dt) {
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
         ball.throwBall(v0, Const::Gravity, vp, bounds);
+        
+        throwInProgress = true;
+        lastThrowScored = false;
 
         // Hide the aiming line once the ball is thrown
         trajectory.clear();
@@ -261,5 +274,11 @@ void Game::render() {
     window.draw(ball);
     window.draw(powerMeter);
     window.draw(scoreText);
+    window.draw(livesText);
+
+    if (gameOver) {
+        window.draw(gameOverText);
+    }
+
     window.display();
 }
