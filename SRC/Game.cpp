@@ -28,8 +28,9 @@ int Game::run() {
         .onStart = [&]() {
             // reset gameplay state & init layout
             score = 0;
-            scoredThisFlight = false;
-            advanceAfterReset = false;
+            throwsLeft = maxThrows;
+            throwsTaken = 0;
+            gameOver = false;
             trajectory.clear();
 
             initLayout();             
@@ -118,18 +119,10 @@ void Game::initLayout() {
     windText.setPosition({ 16.f, 108.f });
     windText.setString(windLabel(windAx));
 
-    // Lives
-    lives = maxLives;
-    throwInProgress = false;
-    lastThrowScored = false;
-    gameOver = false;
-
-    livesText.setFont(uiFont);
-    livesText.setCharacterSize(28);
-    livesText.setPosition({ 16.f, 44.f });
-    livesText.setString("Lives: " + std::to_string(lives));
-
+    gameOver = false; // just to be sure
     gameOverText.setFont(uiFont);
+    gameOverText.setOutlineThickness(2.f);
+    gameOverText.setOutlineColor(sf::Color(0, 0, 0, 200));
     gameOverText.setCharacterSize(64);
     gameOverText.setString("GAME OVER");
     {
@@ -138,6 +131,17 @@ void Game::initLayout() {
         gameOverText.setPosition({ Const::ScreenWidth * 0.5f, Const::ScreenHeight * 0.45f });
     }
 
+    finalScoreText.setFont(uiFont);
+    finalScoreText.setCharacterSize(28);
+    finalScoreText.setOutlineThickness(2.f);
+    finalScoreText.setOutlineColor(sf::Color(0, 0, 0, 200));
+    finalScoreText.setFillColor(sf::Color(255, 255, 255, 235));
+    finalScoreText.setString("Final Score: 0");
+    {
+        auto b = finalScoreText.getLocalBounds();
+        finalScoreText.setOrigin({ b.position.x + b.size.x * 0.5f, b.position.y + b.size.y * 0.5f });
+        finalScoreText.setPosition({ Const::ScreenWidth * 0.5f, Const::ScreenHeight * 0.60f });
+    }
 }
 
 void Game::processEvents() {
@@ -192,21 +196,10 @@ void Game::update(float dt) {
     if (ball.consumeJustReset()) {
         powerMeter.reset();
 
-        // If a throw ended and it wasn't scored -> lose a life
-        if (throwInProgress && !lastThrowScored) {
+        // If the ball reset and we didn't score during this flight -> miss
+        if (!scoredThisFlight) {
             audio.playMiss();
-            lives = std::max(0, lives - 1);
-            livesText.setString("Lives: " + std::to_string(lives));
-
-            if (lives == 0) {
-                gameOver = true;
-                trajectory.clear();
-            }
         }
-
-        // Clear throw state at reset
-        throwInProgress = false;
-        lastThrowScored = false;
 
         scoredThisFlight = false;
 
@@ -218,6 +211,11 @@ void Game::update(float dt) {
         if (throwsLeft == 0 && !gameOver) {
             gameOver = true;
             trajectory.clear();
+            finalScoreText.setString("Final Score: " + std::to_string(score));
+
+            // recenter in case number width changed
+            auto b = finalScoreText.getLocalBounds();
+            finalScoreText.setOrigin({ b.position.x + b.size.x * 0.5f, b.position.y + b.size.y * 0.5f });
         }
     }
 
@@ -226,7 +224,6 @@ void Game::update(float dt) {
         const sf::FloatRect open = trashCan.getOpeningRect(); // SFML3 rect type
         if (open.findIntersection(ball.getBounds()).has_value()) {
             scoredThisFlight = true;
-            lastThrowScored = true;
             audio.playScore();
             score += 1;
             trashCan.setWobble(lerp(6.f, 24.f, std::clamp(score / 20.f, 0.f, 1.f)), 2.2f);
@@ -326,12 +323,12 @@ void Game::render() {
     window.draw(ball);
     window.draw(powerMeter);
     window.draw(scoreText);
-    window.draw(livesText);
     window.draw(throwsText);
     window.draw(windText);
 
     if (gameOver) {
         window.draw(gameOverText);
+        window.draw(finalScoreText);
     }
 
     window.display();

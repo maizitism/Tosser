@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <random>
+#include <memory>
 #include "PowerMeter.hpp"
 #include "Ball.hpp"
 #include "Trajectory.hpp"
@@ -7,8 +9,6 @@
 #include "Trashcan.hpp"
 #include "UI.hpp"
 #include "Audio.hpp"
-
-#include <memory>
 
 
 class Game {
@@ -39,12 +39,8 @@ private:
     sf::Font uiFont;
     sf::Text scoreText { uiFont };
 
-    // Lives system
-    int maxLives = 3;
-    int lives = 3;
-    bool throwInProgress = false;
-    bool lastThrowScored = false;
     bool gameOver = false;
+    sf::Text finalScoreText{ uiFont };
 
     // Wind system
     sf::Text windText{ uiFont };
@@ -58,7 +54,6 @@ private:
     int throwsLeft = 20;
     sf::Text throwsText{ uiFont };
 
-    sf::Text livesText{ uiFont };
     sf::Text gameOverText{ uiFont };
 
     sf::Texture backgroundTex;
