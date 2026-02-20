@@ -98,8 +98,22 @@ void TrashCan::advance(int score) {
     x = std::clamp(x, xMin, xMax);
     y = std::clamp(y, yMin, yMax);
 
-    setPosition({ x, y });
+    basePos_ = { x, y };
+    setPosition(basePos_);
     setScale(s);
+}
+
+void TrashCan::setWobble(float ampX, float speed) {
+    wobbleAmpX_ = ampX;
+    wobbleSpeed_ = speed;
+}
+
+void TrashCan::update(float dt) {
+    wobbleT_ += dt;
+
+    // Sine wobble around basePos_
+    const float dx = std::sin(wobbleT_ * wobbleSpeed_) * wobbleAmpX_;
+    sprite.setPosition(basePos_ + sf::Vector2f(dx, 0.f));
 }
 
 void TrashCan::draw(sf::RenderTarget& target, sf::RenderStates states) const {

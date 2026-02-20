@@ -19,6 +19,9 @@ public:
     void setScaleRange(float closeScale, float farScale);
     void advance(int score);
 
+    void update(float dt);
+    void setWobble(float ampX, float speed);
+
 private:
     sf::Texture texture;
     sf::Sprite sprite;
@@ -40,6 +43,10 @@ private:
     float tMax_ = 0.f;
     float perspective(float t) const;
 
+    sf::Vector2f basePos_{};
+    float wobbleAmpX_ = 10.f;   // pixels
+    float wobbleSpeed_ = 2.0f;  // radians/sec-ish (speed of sine)
+    float wobbleT_ = 0.f;
 
 
     std::mt19937 rng_{ std::random_device{}() };
