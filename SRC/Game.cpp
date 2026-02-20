@@ -153,6 +153,7 @@ void Game::update(float dt) {
 
     const sf::FloatRect bounds = Const::ScreenBounds();
     ball.update(dt);
+    if (!gameOver) trashCan.update(dt);
 
     if (ball.consumeJustReset()) {
         powerMeter.reset();
@@ -189,6 +190,7 @@ void Game::update(float dt) {
             lastThrowScored = true;
             audio.playScore();
             score += 1;
+            trashCan.setWobble(lerp(6.f, 24.f, std::clamp(score / 20.f, 0.f, 1.f)), 2.2f);
             scoreText.setString("Score: " + std::to_string(score));
 
             // Defer trashcan movement until the ball actually resets
