@@ -1,5 +1,6 @@
 #include "Audio.hpp"
 #include <iostream>
+#include <optional>
 
 bool Audio::init() {
     const std::string musicPath = "ASSETS/audio/menu.mp3";
@@ -27,11 +28,12 @@ bool Audio::init() {
     ok &= loadBuf(bufScore, scorePath);
     ok &= loadBuf(bufMiss, missPath);
 
-    sScore.setBuffer(bufScore);
-    sMiss.setBuffer(bufMiss);
-
-    sScore.setVolume(sfxVol);
-    sMiss.setVolume(sfxVol);
+    if (ok) {
+        sScore.emplace(bufScore);
+        sMiss.emplace(bufMiss);
+        sScore->setVolume(sfxVol);
+        sMiss->setVolume(sfxVol);
+    }
 
     return ok;
 }
@@ -56,9 +58,9 @@ void Audio::setMusicVolume(float v) {
 
 void Audio::setSfxVolume(float v) {
     sfxVol = std::clamp(v, 0.f, 100.f);
-    sScore.setVolume(sfxVol);
-    sMiss.setVolume(sfxVol);
+    if (sScore) sScore->setVolume(sfxVol);
+    if (sMiss)  sMiss->setVolume(sfxVol);
 }
 
-void Audio::playScore() { sScore.play(); }
-void Audio::playMiss() { sMiss.play(); }
+void Audio::playScore() { if (sScore) sScore->play(); }
+void Audio::playMiss() { if (sMiss)  sMiss->play(); }

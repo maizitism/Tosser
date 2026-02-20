@@ -23,9 +23,8 @@ private:
     sf::SoundBuffer bufScore;
     sf::SoundBuffer bufMiss;
 
-    sf::Sound sClick;
-    sf::Sound sScore;
-    sf::Sound sMiss;
+    std::optional<sf::Sound> sScore;
+    std::optional<sf::Sound> sMiss;
 
     float sfxVol = 70.f;
 };
