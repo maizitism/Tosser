@@ -24,6 +24,7 @@
     <Image Include="ASSETS\trashcan.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\Audio.cpp" />
     <ClCompile Include="SRC\Ball.cpp" />
     <ClCompile Include="SRC\Game.cpp" />
     <ClCompile Include="SRC\GradientBar.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="SRC\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SRC\Audio.hpp" />
     <ClInclude Include="SRC\Ball.hpp" />
     <ClInclude Include="SRC\Constants.hpp" />
     <ClInclude Include="SRC\data.hpp" />
@@ -142,8 +144,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>LIB\SFML3.0.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;opengl32.lib;freetype.lib;sfml-window-s-d.lib;winmm.lib;sfml-system-s-d.lib;
-%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;opengl32.lib;freetype.lib;sfml-window-s-d.lib;winmm.lib;sfml-system-s-d.lib;sfml-audio-s.lib;flacd.lib;vorbisencd.lib;vorbisfiled.lib;vorbisd.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -167,7 +168,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>LIB\SFML3.0.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s.lib;opengl32.lib;freetype.lib;sfml-window-s.lib;winmm.lib;gdi32.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s.lib;opengl32.lib;freetype.lib;sfml-window-s.lib;winmm.lib;gdi32.lib;sfml-system-s.lib;sfml-audio-s.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
