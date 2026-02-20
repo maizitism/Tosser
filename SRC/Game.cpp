@@ -46,6 +46,8 @@ int Game::run() {
         }
         });
 
+    audio.init();
+    audio.startMusic();
 
     while (window.isOpen()) {
         const float dt = clock.restart().asSeconds();
@@ -157,6 +159,7 @@ void Game::update(float dt) {
 
         // If a throw ended and it wasn't scored -> lose a life
         if (throwInProgress && !lastThrowScored) {
+            audio.playMiss();
             lives = std::max(0, lives - 1);
             livesText.setString("Lives: " + std::to_string(lives));
 
@@ -184,6 +187,7 @@ void Game::update(float dt) {
         if (open.findIntersection(ball.getBounds()).has_value()) {
             scoredThisFlight = true;
             lastThrowScored = true;
+            audio.playScore();
             score += 1;
             scoreText.setString("Score: " + std::to_string(score));
 
