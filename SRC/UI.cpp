@@ -39,6 +39,8 @@ void UI::setScene(Scene s) {
 
     if (scene_ == Scene::Menu) {
         hint_.setString("Press Start to play. Options to tune physics.");
+        hint_.setOutlineThickness(2.f);
+        hint_.setOutlineColor(sf::Color(0, 0, 0, 200));
     }
     else if (scene_ == Scene::Options) {
         hint_.setString("Drag sliders or click the value to type. Enter to apply. Esc cancels.");
@@ -154,6 +156,8 @@ void UI::buildOptions() {
         s.valueText.setFont(font_);
         s.valueText.setCharacterSize(18);
         s.valueText.setFillColor(sf::Color(255, 255, 255, 220));
+        s.valueText.setOutlineThickness(2.f);
+        s.valueText.setOutlineColor(sf::Color(0, 0, 0, 200));
         s.valueText.setPosition({ left + 390.f, y + 18.f });
 
         sliders_.push_back(std::move(s));
