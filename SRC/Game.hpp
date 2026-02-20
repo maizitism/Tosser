@@ -22,7 +22,7 @@ private:
     sf::RenderWindow window{
     sf::VideoMode({ (unsigned)Const::ScreenWidth,
                     (unsigned)Const::ScreenHeight }),
-    "SFML works!"
+    "Tosser by Marks Janis Maizitis. Intake project for PR2026"
     };
     sf::Clock clock;
 
