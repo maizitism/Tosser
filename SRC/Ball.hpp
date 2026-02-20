@@ -13,6 +13,7 @@ public:
 
     void throwBall(sf::Vector2f vel0,
         float gravity,
+        float windAccelX,
         sf::Vector2f vanishingPoint,
         sf::FloatRect bounds);
 
@@ -65,6 +66,9 @@ private:
     float resetTimer = 0.f;
     float resetDelay = 2.f;
     sf::Vector2f spawnPos{};
+
+    // Wind data
+    float windAx = 0.f;
 
     // Reset info
     bool justReset_ = false;

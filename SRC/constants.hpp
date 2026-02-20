@@ -15,6 +15,7 @@ namespace Const {
     inline float DepthFactor = 1.5f;
     inline float vp_x = 120.f;
     inline float vp_y = -80.f;
+    inline float WindAccelX = 0.f;          // positive pushes right
 
     // Defaults for reset
     constexpr float GravityDefault = 980.f;
@@ -22,6 +23,7 @@ namespace Const {
     constexpr float DepthFactorDefault = 1.5f;
     constexpr float vp_xDefault = 120.f;
     constexpr float vp_yDefault = -80.f;
+    constexpr float WindAccelXDefault = 0.f;
 
     inline sf::FloatRect ScreenBounds() {
         return sf::FloatRect({ 0.f, 0.f }, { ScreenWidth, ScreenHeight });

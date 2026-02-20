@@ -245,7 +245,7 @@ void Game::update(float dt) {
 
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
-        ball.throwBall(v0, Const::Gravity, vp, bounds);
+        ball.throwBall(v0, Const::Gravity, Const::WindAccelX, vp, bounds);
         
         throwInProgress = true;
         lastThrowScored = false;

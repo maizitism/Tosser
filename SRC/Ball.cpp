@@ -52,8 +52,9 @@ float Ball::perspective(float time) const {
 
 void Ball::throwBall(sf::Vector2f vel0,
     float gravity,
+    float windAccelX,
     sf::Vector2f vanishingPoint,
-    sf::FloatRect b) {
+    sf::FloatRect b){
     // Only allow throw from Ready
     if (!isReady()) return;
 
@@ -62,6 +63,7 @@ void Ball::throwBall(sf::Vector2f vel0,
     v0 = vel0;
     g = gravity;
     vp = vanishingPoint;
+    windAx = windAccelX;
 
     t = 0.f;
     state_ = State::InFlight;
@@ -147,8 +149,8 @@ void Ball::update(float dt) {
     // --- InFlight simulation ---
     t += dt;
 
-    const sf::Vector2f gvec{ 0.f, g };
-    const sf::Vector2f p = p0 + v0 * t + 0.5f * gvec * (t * t);
+    const sf::Vector2f avec{ windAx, g };
+    const sf::Vector2f p = p0 + v0 * t + 0.5f * avec * (t * t);
 
     float k = perspective(t);
     const sf::Vector2f pp = vp + (p - vp) * k;
