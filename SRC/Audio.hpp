@@ -11,7 +11,6 @@ public:
     void setMusicVolume(float v); // 0..100
     void setSfxVolume(float v);   // 0..100
 
-    void playClick();
     void playScore();
     void playMiss();
 
@@ -21,7 +20,6 @@ private:
     float musicVol = 35.f;
 
     // SFX
-    sf::SoundBuffer bufClick;
     sf::SoundBuffer bufScore;
     sf::SoundBuffer bufMiss;
 

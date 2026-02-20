@@ -27,11 +27,9 @@ bool Audio::init() {
     ok &= loadBuf(bufScore, scorePath);
     ok &= loadBuf(bufMiss, missPath);
 
-    sClick.setBuffer(bufClick);
     sScore.setBuffer(bufScore);
     sMiss.setBuffer(bufMiss);
 
-    sClick.setVolume(sfxVol);
     sScore.setVolume(sfxVol);
     sMiss.setVolume(sfxVol);
 
@@ -58,11 +56,9 @@ void Audio::setMusicVolume(float v) {
 
 void Audio::setSfxVolume(float v) {
     sfxVol = std::clamp(v, 0.f, 100.f);
-    sClick.setVolume(sfxVol);
     sScore.setVolume(sfxVol);
     sMiss.setVolume(sfxVol);
 }
 
-void Audio::playClick() { sClick.play(); }
 void Audio::playScore() { sScore.play(); }
 void Audio::playMiss() { sMiss.play(); }
