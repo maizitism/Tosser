@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ASSETS\snow.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="ASSETS\paper_ball.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="ASSETS\trashcan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ASSETS\blurred_office_background.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ASSETS\blurred_office_background.jpg" />
     <Image Include="ASSETS\paper_ball.png" />
-    <Image Include="ASSETS\snow.png" />
     <Image Include="ASSETS\trashcan.png" />
   </ItemGroup>
   <ItemGroup>

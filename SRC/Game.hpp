@@ -22,7 +22,8 @@ private:
     sf::RenderWindow window{
     sf::VideoMode({ (unsigned)Const::ScreenWidth,
                     (unsigned)Const::ScreenHeight }),
-    "Tosser by Marks Janis Maizitis. Intake project for PR2026"
+    "Tosser by Marks Janis Maizitis. Intake project for PR2026",
+    sf::Style::Titlebar | sf::Style::Close
     };
     sf::Clock clock;
 
