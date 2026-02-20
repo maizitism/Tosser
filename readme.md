@@ -134,11 +134,3 @@ All asset paths are relative to the executable working directory.
     - Miss sound: [Source](https://www.youtube.com/watch?v=slZTkRNVgZc), Skype - OLD_HANGUP
 
 ---
-
-## Screenshots / Demo (Optional)
-
-Add screenshots or a short GIF/video here to show:
-- Menu
-- Options sliders
-- Gameplay throw + wind HUD
-- Game over final score
