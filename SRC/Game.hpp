@@ -46,6 +46,18 @@ private:
     bool lastThrowScored = false;
     bool gameOver = false;
 
+    // Wind system
+    sf::Text windText{ uiFont };
+    float windAx = 0.f;          // current wind acceleration (px/s^2)
+    int throwsTaken = 0;         // total throws made this round
+    std::mt19937 windRng{ std::random_device{}() };
+    std::uniform_real_distribution<float> windDist{ -400.f, 400.f };
+
+    // Arcade "fixed throw" system
+    int maxThrows = 20;
+    int throwsLeft = 20;
+    sf::Text throwsText{ uiFont };
+
     sf::Text livesText{ uiFont };
     sf::Text gameOverText{ uiFont };
 

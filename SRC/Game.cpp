@@ -58,6 +58,19 @@ int Game::run() {
     return 0;
 }
 
+// helper for updating the wind label
+static std::string windLabel(float ax) {
+    // ax is px/s^2. Show direction + magnitude.
+    const float mag = std::abs(ax);
+    if (mag < 1.f) return "Wind: calm";
+
+    const char* dir = (ax < 0.f) ? "<-" : "->";
+
+    char buf[64];
+    std::snprintf(buf, sizeof(buf), "Wind: %s %.0f px/s", dir, mag);
+    return std::string(buf);
+}
+
 void Game::initLayout() {
     ball.setSpawnPosition({ 750.f, 350.f });
     powerMeter.setPosition({ 900.f, 250.f });
@@ -85,7 +98,6 @@ void Game::initLayout() {
     scoreText.setString("Score: 0");
 
     throwsLeft = maxThrows;
-
     throwsText.setFont(uiFont);
     throwsText.setCharacterSize(28);
     throwsText.setOutlineThickness(2.f);
@@ -93,6 +105,18 @@ void Game::initLayout() {
     throwsText.setFillColor(sf::Color(255, 255, 255, 235));
     throwsText.setPosition({ 16.f, 76.f });
     throwsText.setString("Throws: " + std::to_string(throwsLeft));
+
+    windAx = windDist(windRng);
+    Const::WindAccelX = windAx;     // this is what Ball will use
+    throwsTaken = 0;
+
+    windText.setFont(uiFont);
+    windText.setCharacterSize(24);
+    windText.setOutlineThickness(2.f);
+    windText.setOutlineColor(sf::Color(0, 0, 0, 200));
+    windText.setFillColor(sf::Color(255, 255, 255, 235));
+    windText.setPosition({ 16.f, 108.f });
+    windText.setString(windLabel(windAx));
 
     // Lives
     lives = maxLives;
@@ -263,11 +287,16 @@ void Game::update(float dt) {
         sf::Vector2f vp = ball.getPosition() + sf::Vector2f(Const::vp_x, Const::vp_y);
 
         ball.throwBall(v0, Const::Gravity, Const::WindAccelX, vp, bounds);
+        throwsTaken++;
         throwsLeft = std::max(0, throwsLeft - 1);
         throwsText.setString("Throws: " + std::to_string(throwsLeft));
-        
-        throwInProgress = true;
-        lastThrowScored = false;
+
+        // Change wind every 3 throws
+        if (throwsTaken % 3 == 0) {
+            windAx = windDist(windRng);
+            Const::WindAccelX = windAx;
+            windText.setString(windLabel(windAx));
+        }
 
         // Hide the aiming line once the ball is thrown
         trajectory.clear();
@@ -299,6 +328,7 @@ void Game::render() {
     window.draw(scoreText);
     window.draw(livesText);
     window.draw(throwsText);
+    window.draw(windText);
 
     if (gameOver) {
         window.draw(gameOverText);
