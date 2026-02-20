@@ -46,7 +46,6 @@ int Game::run() {
         }
         });
 
-    //initLayout();
 
     while (window.isOpen()) {
         const float dt = clock.restart().asSeconds();
@@ -82,6 +81,26 @@ void Game::initLayout() {
     scoreText.setCharacterSize(28);
     scoreText.setPosition({ 16.f, 12.f });
     scoreText.setString("Score: 0");
+
+    // Lives
+    lives = maxLives;
+    throwInProgress = false;
+    lastThrowScored = false;
+    gameOver = false;
+
+    livesText.setFont(uiFont);
+    livesText.setCharacterSize(28);
+    livesText.setPosition({ 16.f, 44.f });
+    livesText.setString("Lives: " + std::to_string(lives));
+
+    gameOverText.setFont(uiFont);
+    gameOverText.setCharacterSize(64);
+    gameOverText.setString("GAME OVER");
+    {
+        auto b = gameOverText.getLocalBounds();
+        gameOverText.setOrigin({ b.position.x + b.size.x * 0.5f, b.position.y + b.size.y * 0.5f });
+        gameOverText.setPosition({ Const::ScreenWidth * 0.5f, Const::ScreenHeight * 0.45f });
+    }
 
 }
 

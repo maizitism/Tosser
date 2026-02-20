@@ -33,9 +33,18 @@ private:
     bool scoredThisFlight = false;
     bool advanceAfterReset = false;
 
-
     sf::Font uiFont;
     sf::Text scoreText { uiFont };
+
+    // Lives system
+    int maxLives = 3;
+    int lives = 3;
+    bool throwInProgress = false;
+    bool lastThrowScored = false;
+    bool gameOver = false;
+
+    sf::Text livesText{ uiFont };
+    sf::Text gameOverText{ uiFont };
 
     sf::Texture backgroundTex;
     sf::Sprite  backgroundSpr {backgroundTex};
